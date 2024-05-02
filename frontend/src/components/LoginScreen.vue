@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import Swal from 'sweetalert2'
+import router from '../router'
+import { useStore } from 'vuex'
 
 //Cuando se pulsa el boton inicar sesion se accede a una url de la API y se le manda el usuario
 //y la contraseña, si es correcto se redirige a la pagina de compra
@@ -9,8 +11,37 @@ const rules = [
   (v) => (v && v.length >= 5) || 'El campo debe tener al menos 5 caracteres'
 ]
 
+//Definimos la store
+const store = useStore()
+
 const usuario = ref('')
 const contrasenia = ref('')
+
+const datosUsuario = ref({
+  nombreUsuario: '',
+  login: ''
+})
+
+const rellenarUsuario = (usuarioRecibido, loginRecibido) => {
+  datosUsuario.value.nombreUsuario = usuarioRecibido
+  datosUsuario.value.login = loginRecibido
+  cargarDatos()
+}
+
+//Rellene los datos del usuario
+const cargarDatos = () => {
+  if (datosUsuario.value.nombreUsuario === '' || datosUsuario.value.login === '') {
+    router.push('/login')
+  } else {
+    usuario.value = datosUsuario.value.nombreUsuario
+    contrasenia.value = datosUsuario.value.login
+    store.commit('setData', datosUsuario.value)
+    console.log('Usuario:', datosUsuario.value.nombreUsuario)
+    console.log('Contrasenia:', datosUsuario.value.login)
+    store.commit('setLoggedIn', true)
+    console.log('Loggeado:', store.getters['isLoggedIn'])
+  }
+}
 
 const iniciarSesion = () => {
   //Se obtienen los valores de los campos de texto
@@ -38,8 +69,7 @@ const iniciarSesion = () => {
     })
       .then((response) => {
         if (response.ok) {
-          //Si la respuesta es correcta se redirige a la pagina de compra
-          window.location.href = '/biblioteca'
+          return response.json()
         } else if (response.status === 400) {
           Swal.fire({
             icon: 'error',
@@ -50,6 +80,10 @@ const iniciarSesion = () => {
         } else {
           throw new Error('Error en el servidor')
         }
+      })
+      .then((data) => {
+        rellenarUsuario(data.nombreUsuario, data.login)
+        router.push('/biblioteca')
       })
       .catch((error) => {
         console.log('Error:', error)

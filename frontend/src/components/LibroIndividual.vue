@@ -35,7 +35,6 @@ img {
   top: -50px;
   left: -35px;
   display: block;
-  z-index: 999;
   cursor: pointer;
 }
 

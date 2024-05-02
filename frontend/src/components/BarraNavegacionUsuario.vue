@@ -1,5 +1,26 @@
 <script setup>
 import router from '../router'
+import { onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+
+const userData = store.getters['getData']
+const usuario = ref('')
+const login = ref('')
+
+const cargarDatos = () => {
+  if (userData.nombreUsuario === '' || userData.login === '') {
+    router.push('/login')
+  } else {
+    usuario.value = userData.nombreUsuario
+    login.value = userData.login
+  }
+}
+
+onMounted(() => {
+  cargarDatos()
+})
 </script>
 
 <template>
@@ -8,10 +29,11 @@ import router from '../router'
       <v-navigation-drawer expand-on-hover rail>
         <v-list>
           <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            subtitle="sandra_a88@gmailcom"
-            title="Sandra Adams"
-          ></v-list-item>
+            prepend-avatar="https://randomuser.me/api/portraits/women/4.jpg"
+            :title="usuario"
+            :subtitle="login"
+          >
+          </v-list-item>
         </v-list>
 
         <v-divider></v-divider>
