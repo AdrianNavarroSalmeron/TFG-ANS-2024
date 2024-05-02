@@ -1,11 +1,11 @@
 <script setup>
-import NavBar from '@/components/NavBar.vue'
+import BarraNavegacion from './components/BarraNavegacionUsuario.vue'
 </script>
 
 <template>
   <div class="contenedorGenerico">
     <div class="contenedorNav">
-      <NavBar />
+      <BarraNavegacion />
     </div>
     <div class="contenedorCompra">
       <router-view />
@@ -17,7 +17,7 @@ import NavBar from '@/components/NavBar.vue'
 .contenedorGenerico {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .contenedorCompra {
