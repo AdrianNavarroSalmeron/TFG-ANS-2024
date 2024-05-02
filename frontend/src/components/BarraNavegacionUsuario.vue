@@ -18,6 +18,13 @@ const cargarDatos = () => {
   }
 }
 
+const cerrarSesion = () => {
+  store.dispatch('logout')
+  router.push('/login')
+  console.log('Estado del log:' + store.getters['isLoggedIn'])
+  console.log('Datos del usuario:' + store.getters['getData'])
+}
+
 onMounted(() => {
   cargarDatos()
 })
@@ -64,6 +71,12 @@ onMounted(() => {
               ></v-text-field>
             </v-toolbar>
           </v-list-item>
+          <v-list-item
+            @click="cerrarSesion"
+            prepend-icon="fa-solid fa-right-from-bracket"
+            title="Cerrar sesión"
+            value="logout"
+          ></v-list-item>
         </v-list>
       </v-navigation-drawer>
 
@@ -79,5 +92,18 @@ onMounted(() => {
 
 .toolBarItem {
   background-color: white;
+}
+
+.hover-item {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s,
+    opacity 0.5s linear;
+}
+
+.hover-item:hover {
+  visibility: visible;
+  opacity: 1;
 }
 </style>
