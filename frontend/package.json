@@ -19,6 +19,7 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
+    "sweetalert2": "^11.10.8",
     "vue": "^3.4.26",
     "vue-router": "^4.3.0",
     "vuetify": "^3.5.17"

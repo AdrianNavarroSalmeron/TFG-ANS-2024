@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import Swal from 'sweetalert2'
 
 //Cuando se pulsa el boton inicar sesion se accede a una url de la API y se le manda el usuario
 //y la contraseña, si es correcto se redirige a la pagina de compra
@@ -16,7 +17,11 @@ const iniciarSesion = () => {
 
   //Se comprueba que los campos no esten vacios
   if (usuario.value === '' || contrasenia.value === '') {
-    alert('Los campos no pueden estar vacios')
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Usuario o contraseña vacios'
+    })
   } else {
     //Se realiza la peticion a la API
     fetch('http://localhost:8090/api/usuarios/login', {
@@ -36,7 +41,11 @@ const iniciarSesion = () => {
           //Si la respuesta es correcta se redirige a la pagina de compra
           window.location.href = '/biblioteca'
         } else if (response.status === 400) {
-          alert('Usuario o contraseña incorrectos')
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Usuario o contraseña incorrectos'
+          })
           throw new Error('Usuario o contraseña incorrectos')
         } else {
           throw new Error('Error en el servidor')
