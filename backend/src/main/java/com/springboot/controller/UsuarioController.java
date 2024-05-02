@@ -77,7 +77,10 @@ public class UsuarioController {
             if(usuario.getLogin()
                     .equals(usuario1.getLogin())
                     && usuario.getContrasenia().equals(usuario1.getContrasenia())){
-                return new ResponseEntity<String>("Ta bien", HttpStatus.OK);
+                Usuario usuarioConInformacionBasica = new Usuario();
+                usuarioConInformacionBasica.setNombreUsuario(usuario1.getNombreUsuario());
+                usuarioConInformacionBasica.setLogin(usuario1.getLogin());
+                return new ResponseEntity<Usuario>(usuarioConInformacionBasica, HttpStatus.OK);
 
             }
             else{
