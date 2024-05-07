@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import Swal from 'sweetalert2'
 
 const usuario = ref({
-  id: 0,
-  nombre: '',
+  idUsuario: 0,
+  nombreUsuario: '',
   login: '',
   contrasenia: ''
 })
@@ -52,12 +52,13 @@ const registrarUsuario = async () => {
   }
   //Rellenamos el objeto usuario
   usuario.value = {
-    id: 0,
-    nombre: nombre.value,
+    idUsuario: 0,
+    nombreUsuario: nombre.value,
     login: login.value,
     contrasenia: contrasenia.value
   }
-  console.log(usuario.value)
+  //Enviamos el usuario al back
+  enviarUsuarioaBack()
 }
 
 const comprobarSiUsuarioEnUso = async () => {
@@ -78,6 +79,30 @@ const recorrerVectorUsuarios = (vectorUsuarios) => {
     }
   }
   return false
+}
+
+const enviarUsuarioaBack = () => {
+  fetch('http://localhost:8090/api/usuarios', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(usuario.value)
+  }).then((response) => {
+    if (response.ok) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Usuario registrado',
+        text: 'Usuario registrado correctamente'
+      })
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error al registrar el usuario'
+      })
+    }
+  })
 }
 </script>
 
