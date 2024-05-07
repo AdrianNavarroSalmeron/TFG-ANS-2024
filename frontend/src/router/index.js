@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import ListaCompra from '@/components/ListaCompra.vue'
 import ListaLibros from '@/components/ListaLibros.vue'
 import LoginScreen from '@/components/LoginScreen.vue'
+import RegistroScreen from '@/components/RegistroScreen.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginScreen
+  },
+  {
+    path: '/registro',
+    name: 'Registro',
+    component: RegistroScreen
   }
 ]
 

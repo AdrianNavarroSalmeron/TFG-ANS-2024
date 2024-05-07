@@ -90,6 +90,10 @@ const iniciarSesion = () => {
       })
   }
 }
+
+const registrarse = () => {
+  router.push('/registro')
+}
 </script>
 
 <template>
@@ -119,6 +123,7 @@ const iniciarSesion = () => {
       <div>
         <v-btn @click="iniciarSesion" class="botonIniciarSesion">Iniciar Sesión</v-btn>
       </div>
+      <label @click="registrarse" class="botonRegistrarse">Registrarse</label>
     </div>
   </div>
 </template>
@@ -165,5 +170,22 @@ const iniciarSesion = () => {
 
 .containerImagen {
   margin: 0px;
+}
+
+.botonIniciarSesion:hover {
+  background-color: white;
+  color: rgb(56, 190, 201);
+}
+.botonRegistrarse {
+  color: rgb(56, 190, 201);
+  background-color: rgb(51, 51, 51);
+  text-decoration: underline;
+  font-weight: lighter;
+  font-size: medium;
+}
+
+.botonRegistrarse:hover {
+  cursor: pointer;
+  color: white;
 }
 </style>
