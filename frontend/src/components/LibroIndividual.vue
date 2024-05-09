@@ -20,12 +20,11 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   font-size: medium;
-  width: 20%;
   justify-content: space-between;
 }
 img {
-  height: 300px;
-  width: 250px;
+  height: 200px;
+  width: 150px;
 }
 
 .parrafo {

@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { onMounted } from 'vue'
-import LibroIndividual from '@/components/LibroIndividual.vue'
 import HeaderBiblioteca from '@/components/HeaderBiblioteca.vue'
+import SeccionHome from '@/components/SeccionHome.vue'
 
 const datosLibros = ref({
   tituloLibro: '',
@@ -12,11 +12,12 @@ const genero = ref('fantasía')
 
 const arrayDeLibros = ref([])
 
-async function getLibrosFantasia(genero) {
+async function getLibrosFantasia() {
   try {
-    const res = await fetch('https://www.googleapis.com/books/v1/volumes?q=' + genero)
+    const res = await fetch(
+      'https://www.googleapis.com/books/v1/volumes?q=subject:fantasy&orderBy=relevance'
+    )
     const data = await res.json()
-
     //Recibimos y almacenamos el numero total de libros recibidos
     const numeroTotalDeLibros = data.items.length
 
@@ -66,12 +67,20 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
     </h1>
   </div>
   <div class="containerLibros">
+    <!--
     <LibroIndividual
       v-for="(libro, index) of arrayDeLibros"
       :key="index"
       :libro="libro"
       :index="index"
     />
+  -->
+    <div class="containerSeccion">
+      <SeccionHome :arrayDeLibros="arrayDeLibros" />
+    </div>
+    <div class="containerSeccion">
+      <SeccionHome :arrayDeLibros="arrayDeLibros" />
+    </div>
   </div>
 </template>
 
@@ -80,7 +89,6 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 70px;
   flex-wrap: wrap;
   background-color: #d3a121;
   padding: 20px;
@@ -90,5 +98,12 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
 .cabeceraLibros {
   text-align: center;
   margin-bottom: 60px;
+}
+
+.containerSeccion {
+  width: 80%; /* Adjust as needed */
+  height: 5%; /* Adjust as needed */
+  margin: 0;
+  padding: 0;
 }
 </style>
