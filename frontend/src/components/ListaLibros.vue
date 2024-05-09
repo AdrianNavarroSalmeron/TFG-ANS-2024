@@ -12,26 +12,22 @@ const genero = ref('fantasía')
 
 const arrayDeLibros = ref([])
 
-const generarDireccionImagen = (id) => {
-  const direccion = 'https://covers.openlibrary.org/b/id/' + id + '-M.jpg'
-  return direccion
-}
-
 async function getLibrosFantasia(genero) {
   try {
-    const res = await fetch('https://openlibrary.org/subjects/' + genero + '.json')
+    const res = await fetch('https://www.googleapis.com/books/v1/volumes?q=' + genero)
     const data = await res.json()
 
     //Recibimos y almacenamos el numero total de libros recibidos
-    const numeroTotalDeLibros = data.works.length
+    const numeroTotalDeLibros = data.items.length
 
     for (let i = 0; i < numeroTotalDeLibros; i++) {
       const libroTemporal = ref({
         tituloLibro: '',
         coverDatos: ''
       })
-      libroTemporal.value.tituloLibro = data.works[i].title
-      libroTemporal.value.coverDatos = generarDireccionImagen(data.works[i].cover_id)
+      libroTemporal.value.tituloLibro = data.items[i].volumeInfo.title
+      const bookImgId = data.items[i].id
+      libroTemporal.value.coverDatos = `https://books.google.com/books/publisher/content/images/frontcover/${bookImgId}?fife=w400-h600&source=gbs_api`
       //Se añade al array de libros
       arrayDeLibros.value.push(libroTemporal)
     }

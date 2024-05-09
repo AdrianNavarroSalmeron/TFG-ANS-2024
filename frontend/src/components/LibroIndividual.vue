@@ -25,6 +25,7 @@ const props = defineProps({
 }
 img {
   height: 300px;
+  width: 250px;
 }
 
 .parrafo {
