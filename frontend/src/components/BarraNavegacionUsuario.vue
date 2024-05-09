@@ -33,7 +33,7 @@ onMounted(() => {
 <template>
   <v-card>
     <v-layout>
-      <v-navigation-drawer expand-on-hover rail>
+      <v-navigation-drawer expand-on-hover rail :width="200">
         <v-list>
           <v-list-item
             prepend-avatar="https://randomuser.me/api/portraits/women/4.jpg"
@@ -42,9 +42,7 @@ onMounted(() => {
           >
           </v-list-item>
         </v-list>
-
         <v-divider></v-divider>
-
         <v-list density="compact" nav>
           <v-list-item
             @click="router.push('/inicio')"
@@ -60,17 +58,6 @@ onMounted(() => {
             value="biblioteca"
           >
           </v-list-item>
-          <v-list-item>
-            <v-toolbar dense floating class="toolBarItem">
-              <v-text-field
-                class="barraBusqueda"
-                prepend-icon="fa-solid fa-magnifying-glass"
-                hide-details
-                single-line
-                placeholder="Libros, autores...."
-              ></v-text-field>
-            </v-toolbar>
-          </v-list-item>
           <v-list-item
             @click="cerrarSesion"
             prepend-icon="fa-solid fa-right-from-bracket"
@@ -79,7 +66,6 @@ onMounted(() => {
           ></v-list-item>
         </v-list>
       </v-navigation-drawer>
-
       <v-main style="height: 250px"></v-main>
     </v-layout>
   </v-card>

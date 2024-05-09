@@ -3,15 +3,19 @@ const props = defineProps({
   libro: Object,
   index: Number
 })
+
+const limitarLongitud = (titulo, limite = 35) => {
+  return titulo.length > limite ? titulo.substring(0, limite) + '...' : titulo
+}
 </script>
 
 <template>
   <div class="contenedorLibro">
     <img class="imagen" :src="props.libro.value.coverDatos" />
     <div class="parrafo">
-      <p>{{ props.libro.value.tituloLibro }}</p>
+      <p>{{ limitarLongitud(props.libro.value.tituloLibro) }}</p>
     </div>
-    <button>Leer</button>
+    <button class="botonDetalles">Detalles</button>
   </div>
 </template>
 
@@ -20,7 +24,6 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   font-size: medium;
-  justify-content: space-between;
 }
 img {
   height: 200px;
@@ -28,7 +31,13 @@ img {
 }
 
 .parrafo {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 10px;
   text-align: center;
+  height: 75px;
+  overflow: hidden;
 }
 
 .imagen {
@@ -38,7 +47,14 @@ img {
   cursor: pointer;
 }
 
-.imagen:hover {
-  transform: scale(1.3);
+.botonDetalles {
+  background-color: rgb(56, 190, 201);
+  color: rgb(51, 51, 51);
+  width: 150px;
+}
+
+.botonDetalles:hover {
+  background-color: white;
+  color: rgb(56, 190, 201);
 }
 </style>

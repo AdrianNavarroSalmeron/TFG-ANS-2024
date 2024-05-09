@@ -2,7 +2,8 @@
 import LibroIndividual from '@/components/LibroIndividual.vue'
 import { ref, onMounted } from 'vue'
 const props = defineProps({
-  arrayDeLibros: Array
+  arrayDeLibros: Array,
+  genero: String
 })
 
 let scrollContainer = ref(null)
@@ -17,7 +18,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="containerHeader">Popular esta semana</div>
+  <div class="containerHeader">Libros de {{ props.genero }} populares</div>
+  <v-divider :thickness="5" color="blue"></v-divider>
   <div class="containerSeccion">
     <v-btn
       class="botonesDireccion"
@@ -60,10 +62,9 @@ onMounted(() => {
 
 .containerHeader {
   text-align: left;
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-top: 20px;
-  margin-bottom: 20px;
-  color: white;
+  color: rgb(44, 177, 188);
 }
 
 .scrollContainer {
@@ -83,5 +84,10 @@ onMounted(() => {
   margin-bottom: 100px;
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.botonesDireccion:hover {
+  background-color: rgb(44, 177, 188);
+  color: white;
 }
 </style>
