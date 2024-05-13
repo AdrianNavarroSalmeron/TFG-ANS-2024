@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { onMounted } from 'vue'
 import HeaderBiblioteca from '@/components/HeaderBiblioteca.vue'
 import SeccionHome from '@/components/SeccionHome.vue'
+import FooterHome from '@/components/FooterHome.vue'
 
 const datosLibros = ref({
   tituloLibro: '',
@@ -94,6 +95,10 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
     <div class="containerSeccion">
       <SeccionHome :arrayDeLibros="arrayDeLibros2" :genero="generoSeccion2" />
     </div>
+  </div>
+  <div>
+    <v-divider :thickness="5" color="blue"></v-divider>
+    <FooterHome />
   </div>
 </template>
 
