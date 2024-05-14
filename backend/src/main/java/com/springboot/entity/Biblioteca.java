@@ -13,16 +13,13 @@ public class Biblioteca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idBiblioteca;
 
-    @Column(name="total_libros" , columnDefinition = "int default 0")
+    @Column(name = "total_libros", columnDefinition = "int default 0")
     private Integer totalLibros;
 
+    //Esto queda mapeado en la tabla intermedia de estaContiene
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "esta_contiene" ,uniqueConstraints = @UniqueConstraint(columnNames = {"id_biblioteca", "id_libro"}),
-            joinColumns = @JoinColumn(name = "id_biblioteca"),
-            inverseJoinColumns = @JoinColumn(name = "id_libro"))
-    private List<Libro> librosList;
+    @OneToMany(mappedBy = "biblioteca")
+    private List<EstaContiene> estaContieneList;
 
     public Long getIdBiblioteca() {
         return idBiblioteca;
@@ -44,11 +41,11 @@ public class Biblioteca {
         this.totalLibros = totalLibros;
     }
 
-    public List<Libro> getLibrosList() {
-        return librosList;
+    public List<EstaContiene> getEstaContieneList() {
+        return estaContieneList;
     }
 
-    public void setLibrosList(List<Libro> librosList) {
-        this.librosList = librosList;
+    public void setEstaContieneList(List<EstaContiene> estaContieneList) {
+        this.estaContieneList = estaContieneList;
     }
 }

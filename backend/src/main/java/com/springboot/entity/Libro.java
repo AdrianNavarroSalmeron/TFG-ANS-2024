@@ -19,11 +19,8 @@ public class Libro {
     private String autor;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "librosList", fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
-    private List<Biblioteca> bibliotecaList;
-
-    @Column(name="estado", columnDefinition = "VARCHAR(255) DEFAULT 'Marcado para leer'")
-    private String estado;
+    @OneToMany(mappedBy = "libro")
+    private List<EstaContiene> estaContieneList;
 
 
     public Long getIdLibro() {
@@ -50,19 +47,11 @@ public class Libro {
         this.autor = autor;
     }
 
-    public List<Biblioteca> getBibliotecaList() {
-        return bibliotecaList;
+    public List<EstaContiene> getEstaContieneList() {
+        return estaContieneList;
     }
 
-    public void setBibliotecaList(List<Biblioteca> bibliotecaList) {
-        this.bibliotecaList = bibliotecaList;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstaContieneList(List<EstaContiene> estaContieneList) {
+        this.estaContieneList = estaContieneList;
     }
 }

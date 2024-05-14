@@ -45,7 +45,6 @@ public class LibroServiceImpl implements LibroService {
                 () -> new ResourceNotFoundException("Libro", "Id", id.toString()));
         libroExistente.setTitulo(libro.getTitulo());
         libroExistente.setAutor(libro.getAutor());
-        libroExistente.setEstado(libro.getEstado());
         libroRepository.save(libroExistente);
         return libroExistente;
     }

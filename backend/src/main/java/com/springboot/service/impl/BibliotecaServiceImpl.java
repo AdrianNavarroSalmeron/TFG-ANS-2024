@@ -45,7 +45,7 @@ public class BibliotecaServiceImpl implements BibliotecaService {
         Optional<Libro> libroOptional = libroRepository.findById(idLibro);
         if(bibliotecaOptional.isPresent() && libroOptional.isPresent()){
             //Añadimos el libro a la biblioteca
-            bibliotecaOptional.get().getLibrosList().add(libroOptional.get());
+            //bibliotecaOptional.get().getLibrosList().add(libroOptional.get());
             //Incrementamos el contador de libros de esta
             bibliotecaOptional.get().setTotalLibros(bibliotecaOptional.get().getTotalLibros()+1);
             return bibliotecaRepository.save(bibliotecaOptional.get());
@@ -63,6 +63,7 @@ public class BibliotecaServiceImpl implements BibliotecaService {
         Libro libro = libroRepository.findById(idLibro).orElseThrow(()
                 -> new ResourceNotFoundException("Libro", "Id", idLibro.toString()));
 
+        /**
         if(biblioteca.getLibrosList().contains(libro)){
             biblioteca.getLibrosList().remove(libro);
             bibliotecaRepository.save(biblioteca);
@@ -70,6 +71,7 @@ public class BibliotecaServiceImpl implements BibliotecaService {
         else{
             throw new ResourceNotFoundException("Libro", "Id", idLibro.toString());
         }
+         **/
     }
 
     @Override
@@ -78,7 +80,6 @@ public class BibliotecaServiceImpl implements BibliotecaService {
                 -> new ResourceNotFoundException("Libro", "Id", idLibro.toString()));
         libroExistente.setTitulo(libro.getTitulo());
         libroExistente.setAutor((libro.getAutor()));
-        libroExistente.setEstado(libro.getEstado());
         return libroRepository.save(libroExistente);
     }
 }
