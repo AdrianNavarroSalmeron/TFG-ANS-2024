@@ -16,10 +16,6 @@ public class Biblioteca {
     @Column(name = "total_libros", columnDefinition = "int default 0")
     private Integer totalLibros;
 
-    //Esto queda mapeado en la tabla intermedia de estaContiene
-    @JsonIgnore
-    @OneToMany(mappedBy = "biblioteca")
-    private List<EstaContiene> estaContieneList;
 
     public Long getIdBiblioteca() {
         return idBiblioteca;
@@ -41,11 +37,4 @@ public class Biblioteca {
         this.totalLibros = totalLibros;
     }
 
-    public List<EstaContiene> getEstaContieneList() {
-        return estaContieneList;
-    }
-
-    public void setEstaContieneList(List<EstaContiene> estaContieneList) {
-        this.estaContieneList = estaContieneList;
-    }
 }

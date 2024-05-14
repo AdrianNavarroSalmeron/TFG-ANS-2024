@@ -1,9 +1,11 @@
 package com.springboot.controller;
 
 import com.springboot.entity.Biblioteca;
+import com.springboot.entity.EstaContiene;
 import com.springboot.entity.Libro;
 import com.springboot.exception.ResourceNotFoundException;
 import com.springboot.service.BibliotecaService;
+import com.springboot.service.EstaContieneService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +22,9 @@ public class BibliotecaController {
 
     @Autowired
     private BibliotecaService bibliotecaService;
+
+    @Autowired
+    EstaContieneService estaContieneService;
 
     @GetMapping("{id}")
     public ResponseEntity<?> findBibliotecaById(@PathVariable("id") Long id){
@@ -40,8 +45,7 @@ public class BibliotecaController {
     public ResponseEntity<?> addLibroABiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
                                                  @PathVariable("id_libro") Long idLibro) {
         try {
-            return new ResponseEntity<Biblioteca>(
-                    bibliotecaService.addLibroaBiblioteca(idBiblioteca, idLibro),
+            return  new ResponseEntity<EstaContiene>(estaContieneService.aniadirLibroaBiblioteca(idBiblioteca, idLibro),
                     HttpStatus.OK);
         } catch (EntityNotFoundException | EmptyResultDataAccessException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

@@ -18,10 +18,6 @@ public class Libro {
     @Column(name="autor")
     private String autor;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "libro")
-    private List<EstaContiene> estaContieneList;
-
 
     public Long getIdLibro() {
         return idLibro;
@@ -47,11 +43,4 @@ public class Libro {
         this.autor = autor;
     }
 
-    public List<EstaContiene> getEstaContieneList() {
-        return estaContieneList;
-    }
-
-    public void setEstaContieneList(List<EstaContiene> estaContieneList) {
-        this.estaContieneList = estaContieneList;
-    }
 }

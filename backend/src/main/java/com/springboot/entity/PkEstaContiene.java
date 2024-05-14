@@ -33,7 +33,6 @@ public class PkEstaContiene implements Serializable {
         this.id_libro = id_libro;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
