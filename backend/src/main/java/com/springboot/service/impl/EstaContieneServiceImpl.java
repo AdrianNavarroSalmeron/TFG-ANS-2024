@@ -16,6 +16,8 @@ import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.metamodel.Metamodel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -45,6 +47,18 @@ public class EstaContieneServiceImpl implements EstaContieneService {
         return query.getSingleResult() > 0;
     }
 
+    public Long obtenerIdInstancia(Long idBiblioteca, Long idLibro) {
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT ec.id FROM EstaContiene ec WHERE ec.id.id_biblioteca = :idBiblioteca AND ec.id.id_libro = :idLibro",
+                Long.class);
+        query.setParameter("idBiblioteca", idBiblioteca);
+        query.setParameter("idLibro", idLibro);
+
+        List<Long> resultados = query.getResultList();
+        return resultados.isEmpty() ? null : resultados.get(0);
+    }
+
+
     @Override
     @Transactional // Add this annotation to enable transaction management
     public EstaContiene aniadirLibroaBiblioteca(Long idBiblioteca, Long idLibro) {
@@ -61,5 +75,14 @@ public class EstaContieneServiceImpl implements EstaContieneService {
         } else {
             throw new ResourceNotFoundException("EstaContiene", "Id", idBiblioteca.toString());
         }
+    }
+
+    @Override
+    public ResponseEntity<EstaContiene> updateEstadoLibroEnBiblioteca(Long idBiblioteca, Long idLibro, String estado) {
+
+        EstaContiene estaContiene = estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(idBiblioteca, idLibro);
+        estaContiene.setEstadoLibro(estado);
+        estaContieneRepository.save(estaContiene);
+        return ResponseEntity.status(HttpStatus.OK).body(estaContiene);
     }
 }

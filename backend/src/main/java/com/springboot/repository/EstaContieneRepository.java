@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstaContieneRepository extends JpaRepository<EstaContiene, Long> {
+    EstaContiene findByIdIdBibliotecaAndIdIdLibro(Long idBiblioteca, Long idLibro);
 }

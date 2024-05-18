@@ -77,11 +77,9 @@ public class BibliotecaController {
     @PutMapping("{id_biblioteca}/{id_libro}")
     public ResponseEntity<?> updateLibroFormBiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
                                                        @PathVariable("id_libro") Long idLibro,
-                                                       @RequestBody Libro libro){
+                                                       @RequestBody EstaContiene libro){
         try {
-            bibliotecaService.updateLibroFromBiblioteca(idBiblioteca, idLibro, libro);
-            return new ResponseEntity<Libro>(bibliotecaService.updateLibroFromBiblioteca(idBiblioteca, idLibro, libro)
-                    , HttpStatus.OK);
+            return estaContieneService.updateEstadoLibroEnBiblioteca(idBiblioteca, idLibro, libro.getEstadoLibro());
         }
         catch (ResourceNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -89,4 +87,4 @@ public class BibliotecaController {
         }
 
     }
-}
+}//TODO: FALTA POR MODIFICAR EL BORRAR LIBRO DE BIBLIOTECA

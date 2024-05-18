@@ -12,19 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Table(name="esta_contiene")
 @Data
 public class EstaContiene {
+
     @EmbeddedId
     PkEstaContiene id;
+
     //TODO: revisar si se ha roto la muchos a muchos, y ver si se puede volver a implementar con el oneToMany
     @Column(name="estado_libro")
     private String estadoLibro;
 
     @ManyToOne
-    @MapsId("id_biblioteca")
+    @MapsId("idBiblioteca")
     @JoinColumn(name = "id_biblioteca")
     private Biblioteca biblioteca;
 
     @ManyToOne
-    @MapsId("id_libro")
+    @MapsId("idLibro")
     @JoinColumn(name = "id_libro")
     private Libro libro;
 

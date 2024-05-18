@@ -1,9 +1,6 @@
 package com.springboot.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,34 +9,34 @@ import java.util.Objects;
 public class PkEstaContiene implements Serializable {
 
     @Column(name="id_biblioteca", updatable = false, insertable = false)
-    private Long id_biblioteca;
+    private Long idBiblioteca;
 
     @Column(name="id_libro", updatable = false, insertable = false)
-    private Long id_libro;
+    private Long idLibro;
 
     public PkEstaContiene(){
 
     }
 
     public PkEstaContiene(Long id_biblioteca, Long id_libro) {
-        this.id_biblioteca = id_biblioteca;
-        this.id_libro = id_libro;
+        this.idBiblioteca = id_biblioteca;
+        this.idBiblioteca = id_libro;
     }
 
-    public Long getId_biblioteca() {
-        return id_biblioteca;
+    public Long getIdBiblioteca() {
+        return idBiblioteca;
     }
 
-    public void setId_biblioteca(Long id_biblioteca) {
-        this.id_biblioteca = id_biblioteca;
+    public void setIdBiblioteca(Long idBiblioteca) {
+        this.idBiblioteca = idBiblioteca;
     }
 
-    public Long getId_libro() {
-        return id_libro;
+    public Long getIdLibro() {
+        return idLibro;
     }
 
-    public void setId_libro(Long id_libro) {
-        this.id_libro = id_libro;
+    public void setIdLibro(Long idLibro) {
+        this.idLibro = idLibro;
     }
 
     @Override
@@ -47,11 +44,11 @@ public class PkEstaContiene implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PkEstaContiene that = (PkEstaContiene) o;
-        return Objects.equals(id_biblioteca, that.id_biblioteca) && Objects.equals(id_libro, that.id_libro);
+        return Objects.equals(idBiblioteca, that.idBiblioteca) && Objects.equals(idLibro, that.idLibro);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_biblioteca, id_libro);
+        return Objects.hash(idBiblioteca, idLibro);
     }
 }
