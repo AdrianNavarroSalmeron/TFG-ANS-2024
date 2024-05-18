@@ -16,6 +16,9 @@ public class Biblioteca {
     @Column(name = "total_libros", columnDefinition = "int default 0")
     private Integer totalLibros;
 
+    @OneToMany(mappedBy = "biblioteca", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EstaContiene> estaContiene;
 
     public Long getIdBiblioteca() {
         return idBiblioteca;

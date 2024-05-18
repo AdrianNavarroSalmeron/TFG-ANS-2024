@@ -17,6 +17,15 @@ public class PkEstaContiene implements Serializable {
     @Column(name="id_libro", updatable = false, insertable = false)
     private Long id_libro;
 
+    public PkEstaContiene(){
+
+    }
+
+    public PkEstaContiene(Long id_biblioteca, Long id_libro) {
+        this.id_biblioteca = id_biblioteca;
+        this.id_libro = id_libro;
+    }
+
     public Long getId_biblioteca() {
         return id_biblioteca;
     }

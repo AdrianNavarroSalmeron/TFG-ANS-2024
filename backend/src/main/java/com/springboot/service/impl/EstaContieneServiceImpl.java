@@ -1,8 +1,12 @@
 package com.springboot.service.impl;
+import com.springboot.entity.Biblioteca;
 import com.springboot.entity.EstaContiene;
+import com.springboot.entity.Libro;
 import com.springboot.entity.PkEstaContiene;
 import com.springboot.exception.ResourceNotFoundException;
+import com.springboot.repository.BibliotecaRepository;
 import com.springboot.repository.EstaContieneRepository;
+import com.springboot.repository.LibroRepository;
 import com.springboot.service.EstaContieneService;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -10,6 +14,7 @@ import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.metamodel.Metamodel;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,10 @@ public class EstaContieneServiceImpl implements EstaContieneService {
     @Autowired
     private EstaContieneRepository estaContieneRepository; // Necesitas crear esta clase para manejar la entidad EstaContiene
     @Autowired
+    private BibliotecaRepository bibliotecaRepository;
+    @Autowired
+    private LibroRepository libroRepository;
+    @Autowired
     EntityManager entityManager;
 
     public boolean existeFilaParaIds(Long idBiblioteca, Long idLibro) {
@@ -36,10 +45,18 @@ public class EstaContieneServiceImpl implements EstaContieneService {
         return query.getSingleResult() > 0;
     }
 
+    @Override
+    @Transactional // Add this annotation to enable transaction management
     public EstaContiene aniadirLibroaBiblioteca(Long idBiblioteca, Long idLibro) {
         if (!existeFilaParaIds(idBiblioteca, idLibro)) {
-            // Crea y guarda la nueva fila en caso de que no exista
-            EstaContiene nuevaFila = new EstaContiene(idBiblioteca, idLibro);
+            Libro libro = libroRepository.findById(idLibro)
+                    .orElseThrow(() -> new ResourceNotFoundException("Libro", "Id", idLibro.toString()));
+
+            Biblioteca biblioteca = bibliotecaRepository.findById(idBiblioteca)
+                    .orElseThrow(() -> new ResourceNotFoundException("Biblioteca", "Id", idBiblioteca.toString()));
+
+            // Create and save the new EstaContiene entity
+            EstaContiene nuevaFila = new EstaContiene(biblioteca, libro);
             return estaContieneRepository.save(nuevaFila);
         } else {
             throw new ResourceNotFoundException("EstaContiene", "Id", idBiblioteca.toString());

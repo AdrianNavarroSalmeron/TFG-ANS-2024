@@ -2,11 +2,13 @@ package com.springboot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Table(name="libro")
+@Data
 public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,10 @@ public class Libro {
 
     @Column(name="autor")
     private String autor;
+
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EstaContiene> estaContiene;
 
 
     public Long getIdLibro() {
