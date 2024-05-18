@@ -2,11 +2,13 @@ package com.springboot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Table(name="biblioteca")
+@Data
 public class Biblioteca {
 
     @Id
@@ -40,4 +42,11 @@ public class Biblioteca {
         this.totalLibros = totalLibros;
     }
 
+    public List<EstaContiene> getEstaContiene() {
+        return estaContiene;
+    }
+
+    public void setEstaContiene(List<EstaContiene> estaContiene) {
+        this.estaContiene = estaContiene;
+    }
 }

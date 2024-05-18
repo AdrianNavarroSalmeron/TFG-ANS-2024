@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -40,7 +41,7 @@ public class EstaContieneServiceImpl implements EstaContieneService {
     public boolean existeFilaParaIds(Long idBiblioteca, Long idLibro) {
 
         TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT COUNT(ec) FROM EstaContiene ec WHERE ec.id.id_biblioteca = :idBiblioteca AND ec.id.id_libro = :idLibro",
+                "SELECT COUNT(ec) FROM EstaContiene ec WHERE ec.id.idBiblioteca = :idBiblioteca AND ec.id.idLibro = :idLibro",
                 Long.class);
         query.setParameter("idBiblioteca", idBiblioteca);
         query.setParameter("idLibro", idLibro);
@@ -84,5 +85,25 @@ public class EstaContieneServiceImpl implements EstaContieneService {
         estaContiene.setEstadoLibro(estado);
         estaContieneRepository.save(estaContiene);
         return ResponseEntity.status(HttpStatus.OK).body(estaContiene);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteLibroFromBiblioteca(Long idBiblioteca, Long idLibro) {
+        boolean seHaEliminado = false;
+        Biblioteca biblioteca = bibliotecaRepository.findById(idBiblioteca).orElseThrow(()
+                -> new ResourceNotFoundException("Biblioteca", "Id", idBiblioteca.toString()));
+
+        Libro libro = libroRepository.findById(idLibro).orElseThrow(()
+                -> new ResourceNotFoundException("Libro", "Id", idLibro.toString()));
+        // Buscar la entidad EstaContiene
+
+        EstaContiene estaContieneOpt = estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(idBiblioteca, idLibro);
+
+        if (estaContieneOpt != null) {
+            estaContieneRepository.delete(estaContieneOpt);
+            return ResponseEntity.status(HttpStatus.OK).body("Se ha borrado correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("No se ha podido borrar");
+        }
     }
 }

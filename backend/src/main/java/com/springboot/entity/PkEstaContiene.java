@@ -20,7 +20,7 @@ public class PkEstaContiene implements Serializable {
 
     public PkEstaContiene(Long id_biblioteca, Long id_libro) {
         this.idBiblioteca = id_biblioteca;
-        this.idBiblioteca = id_libro;
+        this.idLibro = id_libro;
     }
 
     public Long getIdBiblioteca() {

@@ -61,10 +61,7 @@ public class BibliotecaController {
     public ResponseEntity<?> deleteLibroFromBiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
                                                  @PathVariable("id_libro") Long idLibro) {
         try {
-            bibliotecaService.deleteLibroFromBiblioteca(idBiblioteca, idLibro);
-            return new ResponseEntity<String>
-                    ("Libro borrado correctamende de la biblioteca",
-                    HttpStatus.OK);
+           return estaContieneService.deleteLibroFromBiblioteca(idBiblioteca, idLibro);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Biblioteca or Libro not found");
