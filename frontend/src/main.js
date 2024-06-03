@@ -35,6 +35,11 @@ const store = createStore({
         },
         setLoggedIn(state, value) {
           state.estaLogado = value
+        },
+        aniadirDatosUsuario(state, userData) {
+          state.data.nombreUsuario = userData.nombreUsuario
+          state.data.login = userData.login
+          state.data.id = userData.id
         }
       },
       actions: {

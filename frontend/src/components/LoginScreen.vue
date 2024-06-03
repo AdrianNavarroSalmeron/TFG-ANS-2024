@@ -83,6 +83,12 @@ const iniciarSesion = () => {
       })
       .then((data) => {
         rellenarUsuario(data.nombreUsuario, data.login)
+        //TODO: crear la mutacion para guardar el usuario en el store
+        store.commit('aniadirDatosUsuario', {
+          nombreUsuario: data.nombreUsuario,
+          login: data.login,
+          id: data.idUsuario
+        })
         router.push('/biblioteca')
       })
       .catch((error) => {
