@@ -55,4 +55,9 @@ public class LibroServiceImpl implements LibroService {
                 ()-> new ResourceNotFoundException("Libro", "Id", id.toString()));
         libroRepository.delete(libroExistente);
     }
+
+    @Override
+    public Libro findLibroByTitulo(String titulo) {
+        return libroRepository.findByTitulo(titulo);
+    }
 }

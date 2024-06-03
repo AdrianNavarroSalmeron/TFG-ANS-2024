@@ -1,12 +1,7 @@
 package com.springboot.entity;
 
-import com.springboot.repository.BibliotecaRepository;
-import com.springboot.repository.LibroRepository;
-import com.springboot.service.BibliotecaService;
-import com.springboot.service.LibroService;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name="esta_contiene")

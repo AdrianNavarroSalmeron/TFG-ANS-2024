@@ -1,11 +1,11 @@
-@startuml
+@startuml Usuario
 'https://plantuml.com/sequence-diagram
 
-autonumber
-
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+class Usuario{
+    -long idUsuario
+    - str login
+    -str nombreUsuario
+    -str contrasenia
+    -str
+    }
 @enduml

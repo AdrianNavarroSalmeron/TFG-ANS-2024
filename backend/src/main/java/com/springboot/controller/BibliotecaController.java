@@ -71,17 +71,29 @@ public class BibliotecaController {
         }
     }
 
-    @PutMapping("{id_biblioteca}/{id_libro}")
-    public ResponseEntity<?> updateLibroFormBiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
+    @PutMapping("{id_usuario}/{id_libro}")
+    public ResponseEntity<?> updateLibroFormBiblioteca(@PathVariable("id_usuario") Long idUsuario,
                                                        @PathVariable("id_libro") Long idLibro,
-                                                       @RequestBody EstaContiene libro){
+                                                       @RequestBody String estado){
         try {
-            return estaContieneService.updateEstadoLibroEnBiblioteca(idBiblioteca, idLibro, libro.getEstadoLibro());
+            return estaContieneService.updateEstadoLibroEnBiblioteca(idUsuario, idLibro, estado);
         }
         catch (ResourceNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Biblioteca or Libro not found");
         }
-
     }
-}//TODO: FALTA POR MODIFICAR EL BORRAR LIBRO DE BIBLIOTECA
+
+    @GetMapping("{id_usuario}/{id_libro}")
+    public ResponseEntity<?> findEstaContieneById(@PathVariable("id_usuario")  Long idUsuario,
+    @PathVariable("id_libro") Long idLibro){
+        try{
+            return  new ResponseEntity<>(bibliotecaService.findEstaContieneById(idUsuario, idLibro),
+                    HttpStatus.OK);
+        }
+        catch(ResourceNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se ha encontrado");
+        }
+    }
+}

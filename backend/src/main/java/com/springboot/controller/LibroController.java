@@ -43,6 +43,11 @@ public class LibroController {
         return new ResponseEntity<Libro>(libroService.getLibroById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/titulo/{titulo}")
+    public ResponseEntity<Libro> getLibroByTitulo(@PathVariable("titulo") String titulo){
+        return new ResponseEntity<Libro>(libroService.findLibroByTitulo(titulo), HttpStatus.OK);
+    }
+
     //Actualizar libro
     @PutMapping("{id}")
     public ResponseEntity<?> updateLibro(@PathVariable("id") Long id, @RequestBody Libro libro){

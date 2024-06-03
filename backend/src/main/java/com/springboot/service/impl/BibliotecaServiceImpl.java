@@ -1,11 +1,11 @@
 package com.springboot.service.impl;
 
-import com.springboot.entity.Biblioteca;
-import com.springboot.entity.Employe;
-import com.springboot.entity.Libro;
+import com.springboot.entity.*;
 import com.springboot.exception.ResourceNotFoundException;
 import com.springboot.repository.BibliotecaRepository;
+import com.springboot.repository.EstaContieneRepository;
 import com.springboot.repository.LibroRepository;
+import com.springboot.repository.UsuarioRepository;
 import com.springboot.service.BibliotecaService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,11 @@ public class BibliotecaServiceImpl implements BibliotecaService {
     BibliotecaRepository bibliotecaRepository;
 
     @Autowired
-    LibroRepository libroRepository;
+    private LibroRepository libroRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private EstaContieneRepository estaContieneRepository;
 
     @Override
     public Biblioteca findBibliotecaById(Long id) {
@@ -81,5 +85,11 @@ public class BibliotecaServiceImpl implements BibliotecaService {
         libroExistente.setTitulo(libro.getTitulo());
         libroExistente.setAutor((libro.getAutor()));
         return libroRepository.save(libroExistente);
+    }
+
+    @Override
+    public EstaContiene findEstaContieneById(Long idUsuario, Long idLibro) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(RuntimeException::new);
+        return estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(usuario.getBiblioteca().getIdBiblioteca(), idLibro);
     }
 }

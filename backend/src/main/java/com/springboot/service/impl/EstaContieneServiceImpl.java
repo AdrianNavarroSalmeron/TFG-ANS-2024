@@ -2,29 +2,20 @@ package com.springboot.service.impl;
 import com.springboot.entity.Biblioteca;
 import com.springboot.entity.EstaContiene;
 import com.springboot.entity.Libro;
-import com.springboot.entity.PkEstaContiene;
+import com.springboot.entity.Usuario;
 import com.springboot.exception.ResourceNotFoundException;
 import com.springboot.repository.BibliotecaRepository;
 import com.springboot.repository.EstaContieneRepository;
 import com.springboot.repository.LibroRepository;
+import com.springboot.repository.UsuarioRepository;
 import com.springboot.service.EstaContieneService;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaDelete;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import jakarta.persistence.metamodel.Metamodel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 
 @Service
 public class EstaContieneServiceImpl implements EstaContieneService {
@@ -35,6 +26,8 @@ public class EstaContieneServiceImpl implements EstaContieneService {
     private BibliotecaRepository bibliotecaRepository;
     @Autowired
     private LibroRepository libroRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     @Autowired
     EntityManager entityManager;
 
@@ -79,9 +72,9 @@ public class EstaContieneServiceImpl implements EstaContieneService {
     }
 
     @Override
-    public ResponseEntity<EstaContiene> updateEstadoLibroEnBiblioteca(Long idBiblioteca, Long idLibro, String estado) {
-
-        EstaContiene estaContiene = estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(idBiblioteca, idLibro);
+    public ResponseEntity<EstaContiene> updateEstadoLibroEnBiblioteca(Long idUsuario, Long idLibro, String estado) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(RuntimeException::new);
+        EstaContiene estaContiene = estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(usuario.getBiblioteca().getIdBiblioteca(), idLibro);
         estaContiene.setEstadoLibro(estado);
         estaContieneRepository.save(estaContiene);
         return ResponseEntity.status(HttpStatus.OK).body(estaContiene);
