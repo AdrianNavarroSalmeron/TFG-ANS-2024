@@ -1,4 +1,5 @@
 <script setup>
+import router from '@/router'
 const props = defineProps({
   libro: Object,
   index: Number
@@ -15,7 +16,9 @@ const limitarLongitud = (titulo, limite = 35) => {
     <div class="parrafo">
       <p>{{ limitarLongitud(props.libro.value.tituloLibro) }}</p>
     </div>
-    <button class="botonDetalles">Detalles</button>
+    <button class="botonDetalles" @click="router.push(`/detallesLibro/${props.libro.value.id}`)">
+      Detalles
+    </button>
   </div>
 </template>
 

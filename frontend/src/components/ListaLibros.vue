@@ -6,6 +6,7 @@ import SeccionHome from '@/components/SeccionHome.vue'
 import FooterHome from '@/components/FooterHome.vue'
 
 const datosLibros = ref({
+  id: '',
   tituloLibro: '',
   coverDatos: ''
 })
@@ -27,9 +28,11 @@ async function getLibrosFantasia() {
 
     for (let i = 0; i < numeroTotalDeLibros; i++) {
       const libroTemporal = ref({
+        id: '',
         tituloLibro: '',
         coverDatos: ''
       })
+      libroTemporal.value.id = data.items[i].id
       libroTemporal.value.tituloLibro = data.items[i].volumeInfo.title
       const bookImgId = data.items[i].id
       libroTemporal.value.coverDatos = `https://books.google.com/books/publisher/content/images/frontcover/${bookImgId}?fife=w400-h600&source=gbs_api`

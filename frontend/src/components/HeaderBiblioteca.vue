@@ -13,6 +13,7 @@ const enviarBusquedaAPadre = (valorDeBusqueda) => {
   <div class="contenedorHeaderBiblioteca">
     <img src="../assets/Logo.png" class="imagenLogo" />
     <BarraDeBusqueda @buscar-por="enviarBusquedaAPadre" />
+    <!--    //TODO: nos tiene que mandar a la cuenta del usuario-->
     <font-awesome-icon class="iconoCuenta" icon="fa-solid fa-user-gear" />
   </div>
 </template>
