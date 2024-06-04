@@ -11,7 +11,6 @@ const datosLibros = ref({
   coverDatos: ''
 })
 const genero = ref('fantasía')
-
 const generoSeccion1 = 'fantasía'
 const generoSeccion2 = 'poesía'
 const arrayDeLibros = ref([])
