@@ -27,24 +27,39 @@ const libroApi = ref({
 })
 
 const mostrarDetalles = ref(false)
+const mensajeOk = ref(false)
+
+const mostrarMensajeOk = () => {
+  mensajeOk.value = true
+  setTimeout(() => {
+    mensajeOk.value = false
+  }, 3000)
+}
 
 //hacemos llamada a la API para obtener los detalles del libro a traves del titulo
 const getDetallesLibro = async () => {
   try {
-    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${props.id}`)
+    const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${props.id}`)
     const data = await res.json()
-    libroApi.value.tituloLibro = data.items[0].volumeInfo.title
-    libroApi.value.autorLibro = data.items[0].volumeInfo.authors[0]
-    libroApi.value.generoLibro = data.items[0].volumeInfo.categories[0]
-    libroApi.value.sinopsisLibro = data.items[0].volumeInfo.description
-    console.log('Este es el id del usuario ' + datosUsuario.value.id)
-    libroApi.value.coverDatos = `https://books.google.com/books/publisher/content/images/frontcover/${props.id}?fife=w400-h600&source=gbs_api`
-    libroApi.value.isbn = data.items[0].volumeInfo.industryIdentifiers[0].identifier
-    libroApi.value.formato = data.items[0].volumeInfo.printType
-    libroApi.value.idioma = data.items[0].volumeInfo.language
-    libroApi.value.paginas = data.items[0].volumeInfo.pageCount
-    libroApi.value.editorial = data.items[0].volumeInfo.publisher
-    libroApi.value.fechaPublicacion = data.items[0].volumeInfo.publishedDate
+    libroApi.value.tituloLibro = data.volumeInfo.title
+    libroApi.value.autorLibro = data.volumeInfo.authors
+      ? data.volumeInfo.authors[0]
+      : 'Autor desconocido'
+    libroApi.value.generoLibro = data.volumeInfo.categories
+      ? data.volumeInfo.categories[0]
+      : 'Género desconocido'
+    libroApi.value.sinopsisLibro = data.volumeInfo.description
+    libroApi.value.coverDatos = data.volumeInfo.imageLinks
+      ? data.volumeInfo.imageLinks.thumbnail
+      : ''
+    libroApi.value.isbn = data.volumeInfo.industryIdentifiers
+      ? data.volumeInfo.industryIdentifiers[0].identifier
+      : 'ISBN desconocido'
+    libroApi.value.formato = data.volumeInfo.printType
+    libroApi.value.idioma = data.volumeInfo.language
+    libroApi.value.paginas = data.volumeInfo.pageCount
+    libroApi.value.editorial = data.volumeInfo.publisher
+    libroApi.value.fechaPublicacion = data.volumeInfo.publishedDate
   } catch (error) {
     libroApi.value.tituloLibro = 'Error en la API' + error
   }
@@ -70,7 +85,6 @@ const cambiarEstadoLibro = async (valor) => {
       if (respuesta.status == 200) {
         console.log('Libro registrado')
         console.log(respuesta.data)
-
         try {
           // Se guarda en la relación con el marcado para leer default
           const response = await axios.post(
@@ -114,6 +128,7 @@ const cambiarEstadoLibro = async (valor) => {
                 }
               )
               console.log(responseCambiarEstadoLibro.data)
+              mostrarMensajeOk()
             } catch (error) {
               console.error('Error al cambiar el estado del libro:', error.response.data)
             }
@@ -166,7 +181,7 @@ defineExpose({
           <p>Editorial: {{ libroApi.editorial }}</p>
           <p>Fecha de publicacion: {{ libroApi.fechaPublicacion }}</p>
         </div>
-        <p class="sinopsis">{{ libroApi.sinopsisLibro }}</p>
+        <p class="sinopsis" v-html="libroApi.sinopsisLibro"></p>
       </div>
       <div class="botonCambiarEstado">
         <select @change="cambiarEstadoLibro" class="select">
@@ -175,6 +190,10 @@ defineExpose({
           <option value="Leido">Leido</option>
           <option value="Por leer">Por leer</option>
         </select>
+        <div v-if="mensajeOk" class="mensajeOk">
+          <span class="iconoOk">&#10004;</span>
+          Se ha actualizado
+        </div>
       </div>
     </div>
     <footer>
@@ -224,6 +243,8 @@ defineExpose({
   border: 1px solid white;
   border-radius: 10px;
   padding: 10px;
+  max-height: 390px; /* Altura máxima de la sinopsis */
+  overflow-y: auto; /* Habilita el scroll vertical */
 }
 
 .portadaLibro img {
@@ -303,5 +324,21 @@ defineExpose({
   border: none;
   border-top: 1px solid #ccc;
   margin-top: 20px;
+}
+
+.mensajeOk {
+  background-color: rgb(51, 51, 51);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+}
+
+.iconoOk {
+  color: #28a745;
+  margin-right: 5px;
 }
 </style>

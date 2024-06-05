@@ -46,7 +46,7 @@ async function getLibrosFantasia() {
 async function getLibrosMisterio() {
   try {
     const res = await fetch(
-      'https://www.googleapis.com/books/v1/volumes?q=subject:poetry&orderBy=relevance'
+      'https://www.googleapis.com/books/v1/volumes?q=sanderson&orderBy=relevance'
     )
     const data = await res.json()
     //Recibimos y almacenamos el numero total de libros recibidos
@@ -54,9 +54,11 @@ async function getLibrosMisterio() {
 
     for (let i = 0; i < numeroTotalDeLibros; i++) {
       const libroTemporal = ref({
+        id: '',
         tituloLibro: '',
         coverDatos: ''
       })
+      libroTemporal.value.id = data.items[i].id
       libroTemporal.value.tituloLibro = data.items[i].volumeInfo.title
       const bookImgId = data.items[i].id
       libroTemporal.value.coverDatos = `https://books.google.com/books/publisher/content/images/frontcover/${bookImgId}?fife=w400-h600&source=gbs_api`
