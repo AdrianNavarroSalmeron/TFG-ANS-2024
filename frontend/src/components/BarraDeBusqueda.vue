@@ -43,12 +43,22 @@ async function getLibrosBusqueda(cadenaBusqueda) {
       const libroTemporal = ref({
         id: '',
         tituloLibro: '',
-        coverDatos: ''
+        coverDatos: '',
+        autorLibro: '',
+        generoLibro: '',
+        numeroPaginas: ''
       })
       libroTemporal.value.id = data.items[i].id
       libroTemporal.value.tituloLibro = data.items[i].volumeInfo.title
       const bookImgId = data.items[i].id
       libroTemporal.value.coverDatos = `https://books.google.com/books/publisher/content/images/frontcover/${bookImgId}?fife=w400-h600&source=gbs_api`
+      libroTemporal.value.autorLibro = data.items[i].volumeInfo.authors
+        ? data.items[i].volumeInfo.authors[0]
+        : 'Autor desconocido'
+      libroTemporal.value.generoLibro = data.items[i].volumeInfo.categories
+        ? data.items[i].volumeInfo.categories[0]
+        : 'Género desconocido'
+      libroTemporal.value.numeroPaginas = data.items[i].volumeInfo.pageCount
       //Se añade al array de libros
       arrayDeLibrosBusqueda.value.push(libroTemporal)
       console.log(arrayDeLibrosBusqueda.value)

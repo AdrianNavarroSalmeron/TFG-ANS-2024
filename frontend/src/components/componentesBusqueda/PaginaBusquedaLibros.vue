@@ -3,6 +3,7 @@ import FooterHome from '../FooterHome.vue'
 import HeaderBiblioteca from '../HeaderBiblioteca.vue'
 import { useStore } from 'vuex'
 import { computed, onMounted } from 'vue'
+import LibroIndividualBusqueda from './LibroIndividualBusqueda.vue'
 
 const store = useStore()
 //const arrayDeLibrosBusqueda = computed(() => store.getters['getLibros'])
@@ -27,10 +28,14 @@ onMounted(() => {
       <hr class="barraSeparadora" />
     </header>
     <div class="contenedorGeneral">
-      <h1>Resultados de la Búsqueda</h1>
-      <div v-for="libro in arrayDeLibrosBusqueda" :key="libro.id">
-        <p>{{ libro.tituloLibro }}</p>
-        <img :src="libro.coverDatos" alt="Portada del libro" />
+      <div v-if="arrayDeLibrosBusqueda.length > 0">
+        <p class="tituloBusqueda">Resultados de la búsqueda</p>
+        <div v-for="libro in arrayDeLibrosBusqueda" :key="libro.id">
+          <LibroIndividualBusqueda :libro="libro" />
+        </div>
+      </div>
+      <div v-else>
+        <p class="tituloBusqueda">No se encontraron resultados</p>
       </div>
     </div>
     <footer>
@@ -49,8 +54,8 @@ onMounted(() => {
 
 .contenedorGeneral {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
   margin-left: 200px;
   margin-right: 100px;
   margin-bottom: 50px;
@@ -62,5 +67,15 @@ onMounted(() => {
   border: none;
   border-top: 1px solid #ccc;
   margin-top: 20px;
+}
+
+.tituloBusqueda {
+  display: flex;
+  font-size: 1.2rem;
+  justify-content: center;
+  margin-right: 200px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 0;
 }
 </style>
