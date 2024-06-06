@@ -59,6 +59,24 @@ const store = createStore({
         getData: (state) => state.data,
         isLoggedIn: (state) => state.estaLogado
       }
+    },
+    libros: {
+      state: () => ({
+        librosBusqueda: []
+      }),
+      mutations: {
+        setLibrosBusqueda(state, libros) {
+          state.librosBusqueda = libros
+        }
+      },
+      actions: {
+        updateLibros({ commit }, libros) {
+          commit('setLibrosBusqueda', libros)
+        }
+      },
+      getters: {
+        getLibros: (state) => state.librosBusqueda
+      }
     }
   }
 })

@@ -4,6 +4,7 @@ import ListaLibros from '@/components/ListaLibros.vue'
 import LoginScreen from '@/components/LoginScreen.vue'
 import RegistroScreen from '@/components/RegistroScreen.vue'
 import DetallesLibro from '@/components/DetallesLibro.vue'
+import PaginaBusquedaLibros from '@/components/componentesBusqueda/PaginaBusquedaLibros.vue'
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     name: 'DetallesLibro',
     component: DetallesLibro,
     props: true
+  },
+  {
+    path: '/busqueda',
+    name: 'PaginaBusquedaLibros',
+    component: PaginaBusquedaLibros
   }
 ]
 

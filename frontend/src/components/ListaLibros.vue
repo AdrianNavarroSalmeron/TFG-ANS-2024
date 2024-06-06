@@ -12,9 +12,10 @@ const datosLibros = ref({
 })
 const genero = ref('fantasía')
 const generoSeccion1 = 'fantasía'
-const generoSeccion2 = 'poesía'
+const generoSeccion2 = 'Sanderson'
 const arrayDeLibros = ref([])
 const arrayDeLibros2 = ref([])
+const arrayDeLibrosBusqueda = ref([])
 
 async function getLibrosFantasia() {
   try {
@@ -70,22 +71,64 @@ async function getLibrosMisterio() {
   }
 }
 
+async function getLibrosBusqueda(cadenaBusqueda) {
+  try {
+    console.log(cadenaBusqueda)
+    const res = await fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=${cadenaBusqueda}&orderBy=relevance`
+    )
+    const data = await res.json()
+
+    //Inicializamos el array
+    arrayDeLibrosBusqueda.value = []
+
+    //Recibimos y almacenamos el numero total de libros recibidos
+    const numeroTotalDeLibros = data.items.length
+
+    for (let i = 0; i < numeroTotalDeLibros; i++) {
+      const libroTemporal = ref({
+        id: '',
+        tituloLibro: '',
+        coverDatos: ''
+      })
+      libroTemporal.value.id = data.items[i].id
+      libroTemporal.value.tituloLibro = data.items[i].volumeInfo.title
+      const bookImgId = data.items[i].id
+      libroTemporal.value.coverDatos = `https://books.google.com/books/publisher/content/images/frontcover/${bookImgId}?fife=w400-h600&source=gbs_api`
+      //Se añade al array de libros
+      arrayDeLibrosBusqueda.value.push(libroTemporal)
+      console.log(arrayDeLibrosBusqueda.value)
+    }
+  } catch (error) {
+    datosLibros.value.tituloLibro = 'Error en la API' + error
+  }
+}
+
 onMounted(() => {
   getLibrosFantasia()
   getLibrosMisterio()
 })
 
+//Filtra la cadena de busqueda que introduce el usuario
+const filtrarCadenaBusqueda = (cadena) => {
+  // Eliminar espacios al inicio y al final, y convertir a minúsculas
+  const cadenaTrimmed = cadena.trim().toLowerCase()
+  // Reemplazar espacios intermedios con '+'
+  const cadenaFiltrada = cadenaTrimmed.replace(/\s+/g, '+')
+  return cadenaFiltrada
+}
+
 const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
-  if (
-    valorIntroducidoPorUsuario.includes('love', 0) ||
-    valorIntroducidoPorUsuario.includes('mistery', 0)
-  ) {
+  // Filtramos la cadena introducida por el usuario
+  const valorFiltrado = filtrarCadenaBusqueda(valorIntroducidoPorUsuario)
+
+  if (valorFiltrado != null && valorFiltrado != '' && valorFiltrado != undefined) {
     //Limpiamos el array
-    while (arrayDeLibros.value.length > 0) {
-      arrayDeLibros.value.pop()
+    while (arrayDeLibrosBusqueda.value.length > 0) {
+      arrayDeLibrosBusqueda.value.pop()
     }
-    genero.value = valorIntroducidoPorUsuario
-    getLibrosFantasia(valorIntroducidoPorUsuario)
+    genero.value = valorFiltrado
+    getLibrosBusqueda(valorIntroducidoPorUsuario)
   }
 }
 </script>
