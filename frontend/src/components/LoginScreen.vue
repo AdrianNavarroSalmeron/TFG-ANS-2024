@@ -14,6 +14,7 @@ const rules = [
 //Definimos la store
 const store = useStore()
 
+//Variables reactivas
 const usuario = ref('')
 const contrasenia = ref('')
 
@@ -120,12 +121,15 @@ const registrarse = () => {
       <div class="containerInputs">
         <!--Input Contresenia-->
         <v-text-field
+          class="inputContrasenia"
           v-model="contrasenia"
           :rules="rules"
           hide-details="auto"
           label="Contraseña"
+          type="password"
         ></v-text-field>
       </div>
+
       <div>
         <v-btn @click="iniciarSesion" class="botonIniciarSesion">Iniciar Sesión</v-btn>
       </div>
@@ -158,6 +162,8 @@ const registrarse = () => {
 }
 
 .containerInputs {
+  display: flex;
+  flex-direction: row;
   margin: 10px;
   width: 40%;
 }

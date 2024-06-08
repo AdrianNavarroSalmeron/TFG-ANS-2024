@@ -141,20 +141,14 @@ defineExpose({
   background-color: rgb(56, 190, 201);
   color: white;
   padding: 10px;
-  width: 100vh;
   justify-content: center;
-}
-
-.portada {
-  display: flex;
-  height: 250px;
-  width: 150px;
 }
 
 .parrafo {
   margin: 0px;
   margin-top: 20px;
   font-size: medium;
+  width: 100%;
 }
 
 .boton {
@@ -162,10 +156,12 @@ defineExpose({
   flex-direction: column;
   justify-content: center;
   align-items: center !important;
+  width: 33%;
 }
-
-.portada img {
-  object-fit: contain;
+.portada {
+  display: flex;
+  height: 250px;
+  width: 33%;
 }
 
 .titulo {
@@ -201,6 +197,7 @@ defineExpose({
 }
 
 .mensajeOk {
+  background-color: rgb(51, 51, 51);
   color: white;
   font-weight: bold;
   font-size: 0.9rem;
