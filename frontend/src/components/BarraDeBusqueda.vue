@@ -14,7 +14,7 @@ const clickBoton = () => {
   setTimeout(() => {
     store.dispatch('updateLibros', arrayDeLibrosBusqueda.value)
     router.push('/busqueda')
-  }, 3000) // Tiempo de retraso
+  }, 1000) // Tiempo de retraso
 }
 
 const datosLibros = ref({

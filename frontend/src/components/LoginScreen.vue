@@ -89,7 +89,7 @@ const iniciarSesion = () => {
           login: data.login,
           id: data.idUsuario
         })
-        router.push('/biblioteca')
+        router.push('/home')
       })
       .catch((error) => {
         console.log('Error:', error)

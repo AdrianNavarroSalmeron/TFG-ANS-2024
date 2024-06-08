@@ -45,7 +45,7 @@ onMounted(() => {
         <v-divider></v-divider>
         <v-list density="compact" nav>
           <v-list-item
-            @click="router.push('/inicio')"
+            @click="router.push('/home')"
             prepend-icon="fa-solid fa-house"
             title="Inicio"
             value="inicio"

@@ -13,8 +13,8 @@ const routes = [
     component: ListaCompra
   },
   {
-    path: '/biblioteca',
-    name: 'PruebaApi',
+    path: '/home',
+    name: 'Home',
     component: ListaLibros
   },
   {
