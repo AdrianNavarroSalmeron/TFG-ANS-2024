@@ -3,6 +3,7 @@ package com.springboot.controller;
 import com.springboot.entity.Usuario;
 import com.springboot.exception.ResourceNotFoundException;
 import com.springboot.service.UsuarioService;
+import com.springboot.utils.Encriptador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -73,19 +74,17 @@ public class UsuarioController {
     @PutMapping("/login")
     public ResponseEntity<?>comprobarSiUsuarioEnBd(@RequestBody Usuario usuario){
         List<Usuario> usuariosBd = usuarioService.getAllUsuarios();
+        String contraseniaEncriptada = Encriptador.encryptSHA256(usuario.getContrasenia());
         for(Usuario usuario1 : usuariosBd){
             if(usuario.getLogin()
                     .equals(usuario1.getLogin())
-                    && usuario.getContrasenia().equals(usuario1.getContrasenia())){
+                    && contraseniaEncriptada.equals(usuario1.getContrasenia())){
                 Usuario usuarioConInformacionBasica = new Usuario();
                 usuarioConInformacionBasica.setIdUsuario(usuario1.getIdUsuario());
                 usuarioConInformacionBasica.setNombreUsuario(usuario1.getNombreUsuario());
                 usuarioConInformacionBasica.setLogin(usuario1.getLogin());
                 return new ResponseEntity<Usuario>(usuarioConInformacionBasica, HttpStatus.OK);
 
-            }
-            else{
-                return new ResponseEntity<String>("Ta mal", HttpStatus.BAD_REQUEST);
             }
         }
         return null;

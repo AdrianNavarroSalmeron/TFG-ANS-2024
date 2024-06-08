@@ -4,6 +4,7 @@ import com.springboot.entity.Usuario;
 import com.springboot.exception.ResourceNotFoundException;
 import com.springboot.repository.UsuarioRepository;
 import com.springboot.service.UsuarioService;
+import com.springboot.utils.Encriptador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+
     @Override
     public Usuario saveUsuario(Usuario usuario) throws DataIntegrityViolationException{
+        String contraseniaEncriptada = Encriptador.encryptSHA256(usuario.getContrasenia());
+        usuario.setContrasenia(contraseniaEncriptada);
         return usuarioRepository.save(usuario);
     }
 
@@ -42,10 +46,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario updateUsuario(Usuario usuario, Long id) {
         Usuario usuarioEsperado = usuarioRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Employe", "Id", id.toString()));
-
+        String contraseniaEncriptada =  Encriptador.encryptSHA256(usuario.getContrasenia());
         usuarioEsperado.setNombreUsuario(usuario.getNombreUsuario());
         usuarioEsperado.setLogin(usuario.getLogin());
-        usuarioEsperado.setContrasenia(usuario.getContrasenia());
+        usuarioEsperado.setContrasenia(contraseniaEncriptada);
 
         usuarioRepository.save(usuarioEsperado);
         return usuarioEsperado;

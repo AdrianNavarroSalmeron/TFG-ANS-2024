@@ -74,9 +74,9 @@ public class BibliotecaController {
     @PutMapping("{id_usuario}/{id_libro}")
     public ResponseEntity<?> updateLibroFormBiblioteca(@PathVariable("id_usuario") Long idUsuario,
                                                        @PathVariable("id_libro") Long idLibro,
-                                                       @RequestBody String estado){
+                                                       @RequestBody EstaContiene estado){
         try {
-            return estaContieneService.updateEstadoLibroEnBiblioteca(idUsuario, idLibro, estado);
+            return estaContieneService.updateEstadoLibroEnBiblioteca(idUsuario, idLibro, estado.getEstadoLibro());
         }
         catch (ResourceNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
