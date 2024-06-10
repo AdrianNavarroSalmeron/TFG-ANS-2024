@@ -41,11 +41,11 @@ public class BibliotecaController {
         return bibliotecaService.findAllBibliotecas();
     }
 
-    @PostMapping("{id_biblioteca}/{id_libro}")
+    @PostMapping("{id_biblioteca}/{id_libro}/{id_libro_api}")
     public ResponseEntity<?> addLibroABiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
-                                                 @PathVariable("id_libro") Long idLibro) {
+                                                 @PathVariable("id_libro") Long idLibro, @PathVariable("id_libro_api") String idLibroApi) {
         try {
-            return  new ResponseEntity<EstaContiene>(estaContieneService.aniadirLibroaBiblioteca(idBiblioteca, idLibro),
+            return  new ResponseEntity<EstaContiene>(estaContieneService.aniadirLibroaBiblioteca(idBiblioteca, idLibro, idLibroApi),
                     HttpStatus.OK);
         } catch (EntityNotFoundException | EmptyResultDataAccessException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -92,6 +92,18 @@ public class BibliotecaController {
                     HttpStatus.OK);
         }
         catch(ResourceNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se ha encontrado");
+        }
+    }
+
+    @GetMapping("/biblioteca/{id_usuario}")
+    public ResponseEntity<?> getBibliotecaEstaContieneUsuario(@PathVariable("id_usuario") Long idUsuario){
+        try{
+            return new ResponseEntity<>(bibliotecaService.getListEstaContieneEnBibliotecaUsuario(idUsuario),
+                    HttpStatus.OK);
+        }
+        catch (ResourceNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No se ha encontrado");
         }

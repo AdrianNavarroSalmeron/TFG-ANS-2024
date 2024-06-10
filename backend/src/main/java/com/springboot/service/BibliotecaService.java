@@ -13,5 +13,6 @@ public interface BibliotecaService {
     public void deleteLibroFromBiblioteca(Long idBiblioteca, Long idLibro);
     public Libro updateLibroFromBiblioteca(Long idBiblioteca, Long idLibro, Libro libro);
     public EstaContiene findEstaContieneById(Long idUsuario, Long idLibro);
+    public List<EstaContiene> getListEstaContieneEnBibliotecaUsuario(Long idUsuario);
 }
 

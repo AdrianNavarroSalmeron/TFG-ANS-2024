@@ -55,7 +55,7 @@ public class EstaContieneServiceImpl implements EstaContieneService {
 
     @Override
     @Transactional // Add this annotation to enable transaction management
-    public EstaContiene aniadirLibroaBiblioteca(Long idBiblioteca, Long idLibro) {
+    public EstaContiene aniadirLibroaBiblioteca(Long idBiblioteca, Long idLibro, String idLibroApi) {
         if (!existeFilaParaIds(idBiblioteca, idLibro)) {
             Libro libro = libroRepository.findById(idLibro)
                     .orElseThrow(() -> new ResourceNotFoundException("Libro", "Id", idLibro.toString()));
@@ -65,6 +65,7 @@ public class EstaContieneServiceImpl implements EstaContieneService {
 
             // Create and save the new EstaContiene entity
             EstaContiene nuevaFila = new EstaContiene(biblioteca, libro);
+            nuevaFila.setIdLibroApi(idLibroApi);
             return estaContieneRepository.save(nuevaFila);
         } else {
             throw new ResourceNotFoundException("EstaContiene", "Id", idBiblioteca.toString());

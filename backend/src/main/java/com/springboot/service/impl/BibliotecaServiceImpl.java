@@ -92,4 +92,12 @@ public class BibliotecaServiceImpl implements BibliotecaService {
         Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(RuntimeException::new);
         return estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(usuario.getBiblioteca().getIdBiblioteca(), idLibro);
     }
+
+    //Metodo que nos devuelve una lista de todas las row de la bd con los libros y su estado
+    @Override
+    public List<EstaContiene> getListEstaContieneEnBibliotecaUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(RuntimeException::new);
+        Long idBiblioteca = usuario.getBiblioteca().getIdBiblioteca();
+        return estaContieneRepository.findByIdIdBiblioteca(usuario.getBiblioteca().getIdBiblioteca());
+    }
 }

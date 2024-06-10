@@ -25,6 +25,10 @@ public class EstaContiene {
     @JoinColumn(name = "id_libro")
     private Libro libro;
 
+    //TODO: SEGUIR POR AQUI
+    @Column(name="id_libro_api")
+    private String idLibroApi;
+
 
     public EstaContiene() {
         this.libro = new Libro();
@@ -54,5 +58,11 @@ public class EstaContiene {
         this.estadoLibro = estadoLibro;
     }
 
+    public String getIdLibroApi() {
+        return idLibroApi;
+    }
 
+    public void setIdLibroApi(String idLibroApi) {
+        this.idLibroApi = idLibroApi;
+    }
 }
