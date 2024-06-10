@@ -191,7 +191,7 @@ defineExpose({
           <option value="" disabled selected>Opciones</option>
           <option value="Leyendo">Leyendo</option>
           <option value="Leido">Leido</option>
-          <option value="Por leer">Por leer</option>
+          <option value="Marcado para leer">Por leer</option>
         </select>
         <div v-if="mensajeOk" class="mensajeOk">
           <span class="iconoOk">&#10004;</span>

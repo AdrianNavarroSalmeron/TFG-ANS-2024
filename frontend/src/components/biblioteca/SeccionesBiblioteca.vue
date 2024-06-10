@@ -2,8 +2,7 @@
 import LibroIndividual from '@/components/LibroIndividual.vue'
 import { ref, onMounted } from 'vue'
 const props = defineProps({
-  arrayDeLibros: Array,
-  genero: String
+  arrayDeLibros: Array
 })
 
 let scrollContainer = ref(null)
