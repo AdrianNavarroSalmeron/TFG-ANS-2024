@@ -23,6 +23,7 @@ const cambiarEstadoLibro = async (valor) => {
   accionSeleccionada.value = valor.target.value
   try {
     const libro = {
+      id: props.libro.id,
       titulo: props.libro.tituloLibro,
       autor: props.libro.autorLibro
     }
@@ -36,7 +37,7 @@ const cambiarEstadoLibro = async (valor) => {
         try {
           // Se guarda en la relación con el marcado para leer default
           const response = await axios.post(
-            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`,
+            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${props.libro.id}`,
             'Marcado para leer'
           )
           console.log(response.data)

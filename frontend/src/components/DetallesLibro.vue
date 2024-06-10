@@ -13,6 +13,7 @@ const store = useStore()
 const datosUsuario = computed(() => store.getters['getData'])
 
 const libroApi = ref({
+  id: '',
   tituloLibro: '',
   autorLibro: '',
   generoLibro: '',
@@ -41,6 +42,7 @@ const getDetallesLibro = async () => {
   try {
     const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${props.id}`)
     const data = await res.json()
+    libroApi.value.id = data.id
     libroApi.value.tituloLibro = data.volumeInfo.title
     libroApi.value.autorLibro = data.volumeInfo.authors
       ? data.volumeInfo.authors[0]
@@ -75,6 +77,7 @@ const cambiarEstadoLibro = async (valor) => {
   accionSeleccionada.value = valor.target.value
   try {
     const libro = {
+      id: libroApi.value.id,
       titulo: libroApi.value.tituloLibro,
       autor: libroApi.value.autorLibro
     }
@@ -88,7 +91,7 @@ const cambiarEstadoLibro = async (valor) => {
         try {
           // Se guarda en la relación con el marcado para leer default
           const response = await axios.post(
-            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`,
+            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${libroApi.value.id}`,
             'Marcado para leer'
           )
           console.log(response.data)
