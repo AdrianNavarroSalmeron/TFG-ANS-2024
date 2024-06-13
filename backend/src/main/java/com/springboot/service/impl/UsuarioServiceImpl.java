@@ -46,10 +46,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario updateUsuario(Usuario usuario, Long id) {
         Usuario usuarioEsperado = usuarioRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Employe", "Id", id.toString()));
-        String contraseniaEncriptada =  Encriptador.encryptSHA256(usuario.getContrasenia());
-        usuarioEsperado.setNombreUsuario(usuario.getNombreUsuario());
-        usuarioEsperado.setLogin(usuario.getLogin());
-        usuarioEsperado.setContrasenia(contraseniaEncriptada);
+        if(usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().isBlank() && !usuario.getNombreUsuario().isEmpty()){
+            usuarioEsperado.setNombreUsuario(usuario.getNombreUsuario());
+        }
+        if(usuario.getContrasenia()!= null && !usuario.getContrasenia().isEmpty() && !usuario.getContrasenia().isBlank()){
+            String contraseniaEncriptada =  Encriptador.encryptSHA256(usuario.getContrasenia());
+            usuarioEsperado.setContrasenia(contraseniaEncriptada);
+        }
+        //usuarioEsperado.setLogin(usuario.getLogin());
 
         usuarioRepository.save(usuarioEsperado);
         return usuarioEsperado;
