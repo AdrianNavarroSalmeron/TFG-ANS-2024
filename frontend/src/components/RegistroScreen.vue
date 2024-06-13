@@ -140,6 +140,7 @@ const enviarUsuarioaBack = () => {
           :rules="rules"
           hide-details="auto"
           label="Contraseña"
+          type="password"
         ></v-text-field>
       </div>
       <div>

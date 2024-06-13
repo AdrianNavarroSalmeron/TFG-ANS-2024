@@ -1,5 +1,6 @@
 <script setup>
 import BarraDeBusqueda from './BarraDeBusqueda.vue'
+import router from '@/router'
 
 const emit = defineEmits('emitBusqueda')
 
@@ -7,14 +8,22 @@ const enviarBusquedaAPadre = (valorDeBusqueda) => {
   emit('emitBusqueda', valorDeBusqueda)
   console.log('Soy header y mando: ' + valorDeBusqueda)
 }
+
+const volverHome = () => {
+  router.push('/home')
+}
+
+const irOpcionesCuenta = () => {
+  router.push('/opciones')
+}
 </script>
 
 <template>
   <div class="contenedorHeaderBiblioteca">
-    <img src="../assets/Logo.png" class="imagenLogo" />
+    <img src="../assets/Logo.png" class="imagenLogo" @click="volverHome" />
     <BarraDeBusqueda @buscar-por="enviarBusquedaAPadre" />
     <!--    //TODO: nos tiene que mandar a la cuenta del usuario-->
-    <font-awesome-icon class="iconoCuenta" icon="fa-solid fa-user-gear" />
+    <font-awesome-icon class="iconoCuenta" icon="fa-solid fa-user-gear" @click="irOpcionesCuenta" />
   </div>
 </template>
 

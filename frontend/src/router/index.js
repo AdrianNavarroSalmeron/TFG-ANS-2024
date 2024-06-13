@@ -6,6 +6,7 @@ import RegistroScreen from '@/components/RegistroScreen.vue'
 import DetallesLibro from '@/components/DetallesLibro.vue'
 import PaginaBusquedaLibros from '@/components/componentesBusqueda/PaginaBusquedaLibros.vue'
 import BibliotecaComponent from '@/components/biblioteca/BibliotecaComponent.vue'
+import PaginaGestionCuenta from '@/components/gestionCuenta/PaginaGestionCuenta.vue'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     path: '/biblioteca',
     name: 'Biblioteca',
     component: BibliotecaComponent
+  },
+  {
+    path: '/opciones',
+    name: 'Opciones',
+    component: PaginaGestionCuenta
   }
 ]
 

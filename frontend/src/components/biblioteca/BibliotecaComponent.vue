@@ -111,12 +111,15 @@ onMounted(async () => {
 </template>
 <style scoped>
 .contenedorTotal {
+}
+
+.containerSecciones {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
-  gap: 20px;
+  flex-wrap: wrap;
   padding: 20px;
+  border-radius: 25px;
 }
 
 .titulo {
@@ -127,5 +130,9 @@ onMounted(async () => {
   margin-top: 50px;
   display: flex;
   flex-direction: column;
+  width: 80%;
+  height: 5%;
+  margin: 0;
+  padding: 0;
 }
 </style>

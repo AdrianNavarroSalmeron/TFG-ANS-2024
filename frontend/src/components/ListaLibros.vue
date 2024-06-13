@@ -165,8 +165,8 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
 }
 
 .containerSeccion {
-  width: 80%; /* Adjust as needed */
-  height: 5%; /* Adjust as needed */
+  width: 80%;
+  height: 5%;
   margin: 0;
   padding: 0;
 }

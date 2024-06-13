@@ -1,12 +1,12 @@
 <script setup>
 import router from '../router'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
 
 const userData = store.getters['getData']
-const usuario = ref('')
+const usuario = computed(() => userData.nombreUsuario)
 const login = ref('')
 
 const cargarDatos = () => {
