@@ -71,9 +71,23 @@ public class BibliotecaController {
         }
     }
 
+    @DeleteMapping("/libroapi/{id_usuario}/{id_libro_api}")
+    public ResponseEntity<?> deleteLibroFromEstaContiene(@PathVariable("id_usuario") Long idUsuario,
+    @PathVariable("id_libro_api") String idLibroApi){
+        try {
+            return estaContieneService.deleteLibroFromBibliotecaLibroApi(idUsuario, idLibroApi);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Biblioteca or Libro not found");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error al insertar el libro");
+        }
+    }
+
     @PutMapping("{id_usuario}/{id_libro}")
     public ResponseEntity<?> updateLibroFormBiblioteca(@PathVariable("id_usuario") Long idUsuario,
-                                                       @PathVariable("id_libro") Long idLibro,
+                                                       @PathVariable("id_libro") String idLibro,
                                                        @RequestBody EstaContiene estado){
         try {
             return estaContieneService.updateEstadoLibroEnBiblioteca(idUsuario, idLibro, estado.getEstadoLibro());
@@ -86,7 +100,7 @@ public class BibliotecaController {
 
     @GetMapping("{id_usuario}/{id_libro}")
     public ResponseEntity<?> findEstaContieneById(@PathVariable("id_usuario")  Long idUsuario,
-    @PathVariable("id_libro") Long idLibro){
+    @PathVariable("id_libro") String idLibro){
         try{
             return  new ResponseEntity<>(bibliotecaService.findEstaContieneById(idUsuario, idLibro),
                     HttpStatus.OK);
@@ -96,6 +110,26 @@ public class BibliotecaController {
                     .body("No se ha encontrado");
         }
     }
+
+    @GetMapping("/libroapi/{id_usuario}/{id_libro}")
+    public ResponseEntity<?> findEstaContieneByIdApiLibro(@PathVariable("id_usuario")  Long idUsuario,
+                                                  @PathVariable("id_libro") String idLibro){
+        try{
+            if(bibliotecaService.findByIdLibroApi(idUsuario, idLibro) != null) {
+                return new ResponseEntity<>(bibliotecaService.findByIdLibroApi(idUsuario, idLibro),
+                        HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        catch(ResourceNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se ha encontrado");
+        }
+    }
+
+
 
     @GetMapping("/biblioteca/{id_usuario}")
     public ResponseEntity<?> getBibliotecaEstaContieneUsuario(@PathVariable("id_usuario") Long idUsuario){

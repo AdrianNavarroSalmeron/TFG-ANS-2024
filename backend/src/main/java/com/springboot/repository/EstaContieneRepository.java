@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface EstaContieneRepository extends JpaRepository<EstaContiene, Long> {
     EstaContiene findByIdIdBibliotecaAndIdIdLibro(Long idBiblioteca, Long idLibro);
-
+    EstaContiene findByIdIdBibliotecaAndIdLibroApi(Long idBiblioteca, String idLibro);
     List<EstaContiene> findByIdIdBiblioteca(Long idBiblioteca);
-}
+
+    }

@@ -73,9 +73,9 @@ public class EstaContieneServiceImpl implements EstaContieneService {
     }
 
     @Override
-    public ResponseEntity<EstaContiene> updateEstadoLibroEnBiblioteca(Long idUsuario, Long idLibro, String estado) {
+    public ResponseEntity<EstaContiene> updateEstadoLibroEnBiblioteca(Long idUsuario, String idLibro, String estado) {
         Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(RuntimeException::new);
-        EstaContiene estaContiene = estaContieneRepository.findByIdIdBibliotecaAndIdIdLibro(usuario.getBiblioteca().getIdBiblioteca(), idLibro);
+        EstaContiene estaContiene = estaContieneRepository.findByIdIdBibliotecaAndIdLibroApi(usuario.getBiblioteca().getIdBiblioteca(), idLibro);
         estaContiene.setEstadoLibro(estado);
         estaContieneRepository.save(estaContiene);
         return ResponseEntity.status(HttpStatus.OK).body(estaContiene);
@@ -97,6 +97,20 @@ public class EstaContieneServiceImpl implements EstaContieneService {
             estaContieneRepository.delete(estaContieneOpt);
             return ResponseEntity.status(HttpStatus.OK).body("Se ha borrado correctamente");
         } else {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("No se ha podido borrar");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> deleteLibroFromBibliotecaLibroApi(Long idUsuario, String idLibroApi) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(RuntimeException::new);
+        EstaContiene estaContiene = estaContieneRepository.findByIdIdBibliotecaAndIdLibroApi
+                (usuario.getBiblioteca().getIdBiblioteca(), idLibroApi);
+        if(estaContiene!= null){
+            estaContieneRepository.delete(estaContiene);
+            return ResponseEntity.status(HttpStatus.OK).body("Se ha borrado correctamente");
+        }
+        else{
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("No se ha podido borrar");
         }
     }
