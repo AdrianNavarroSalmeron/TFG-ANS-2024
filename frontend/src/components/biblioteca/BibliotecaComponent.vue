@@ -61,12 +61,12 @@ onMounted(async () => {
     const leidos = []
 
     for (let i = 0; i < data.length; i++) {
-      if (data[i].estadoLibro.trim() === 'Marcado para leer') {
+      if (data[i].estadoLibro === 'Marcado para leer') {
         marcadosParaLeer.push(data[i].idLibroApi)
-      } else if (data[i].estadoLibro.trim() === 'Leyendo') {
+      } else if (data[i].estadoLibro === 'Leyendo') {
         leyendo.push(data[i].idLibroApi)
         console.log('Leyendo: ' + data[i].idLibroApi)
-      } else if (data[i].estadoLibro.trim() === 'Leido') {
+      } else if (data[i].estadoLibro === 'Leido') {
         leidos.push(data[i].idLibroApi)
       }
     }

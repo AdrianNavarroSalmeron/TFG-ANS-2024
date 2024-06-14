@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineExpose, watch, computed } from 'vue'
+import { ref, defineExpose, watch, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useStore } from 'vuex'
 
@@ -11,6 +11,28 @@ const datosUsuario = computed(() => store.getters['getData'])
 
 const accionSeleccionada = ref('')
 const mensajeOk = ref(false)
+const libroEnBibliotecaActualizar = ref(false)
+
+const consultarSiLibroEnBiblioteca = async () => {
+  try {
+    const estadoLibro = await axios.get(
+      `http://localhost:8090/api/bibliotecas/libroapi/${datosUsuario.value.id}/${props.libro.id}`
+    )
+    if (estadoLibro.status === 200) {
+      accionSeleccionada.value = estadoLibro.data.estadoLibro
+      libroEnBibliotecaActualizar.value = true
+    }
+  } catch (error) {
+    console.error(
+      'Error al consultar si el libro está en la biblioteca:',
+      error.response?.data || error.message
+    )
+  }
+}
+
+onMounted(() => {
+  consultarSiLibroEnBiblioteca()
+})
 
 const mostrarMensajeOk = () => {
   mensajeOk.value = true
@@ -20,83 +42,90 @@ const mostrarMensajeOk = () => {
 }
 
 const cambiarEstadoLibro = async (valor) => {
-  accionSeleccionada.value = valor.target.value
-  try {
-    const libro = {
-      id: props.libro.id,
-      titulo: props.libro.tituloLibro,
-      autor: props.libro.autorLibro
-    }
-    // Primero intentamos registrar el libro
+  const accion = valor.target.value
+  accionSeleccionada.value = accion
+
+  if (!libroEnBibliotecaActualizar.value) {
     try {
+      const libro = {
+        id: props.libro.id,
+        titulo: props.libro.tituloLibro,
+        autor: props.libro.autorLibro
+      }
+
+      // Intentamos registrar el libro
       const respuesta = await axios.post(`http://localhost:8090/api/libros`, libro)
       const idLibro = respuesta.data.idLibro
-      if (respuesta.status == 200) {
-        console.log('Libro registrado')
-        console.log(respuesta.data)
-        try {
-          // Se guarda en la relación con el marcado para leer default
-          const response = await axios.post(
-            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${props.libro.id}`,
-            'Marcado para leer'
-          )
-          console.log(response.data)
-        } catch (error) {
-          console.error('Error al guardar en la relación:', error.response.data)
-        }
+      console.log('Libro registrado', respuesta.data)
+
+      // Crear la relación con el marcado para leer default
+      try {
+        const response = await axios.post(
+          `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${props.libro.id}`,
+          'Marcado para leer'
+        )
+        console.log(response.data)
+        mostrarMensajeOk()
+      } catch (error) {
+        console.error('Error al guardar en la relación:', error.response?.data || error.message)
       }
     } catch (error) {
       if (error.response && error.response.status !== 200) {
-        //Consultamos la bd para buscar el libro
-        const libroRespuesta = await axios.get(
-          `http://localhost:8090/api/libros/titulo/${props.libro.tituloLibro}`
-        )
-        console.log(libroRespuesta.data)
-        const idLibro = libroRespuesta.data.idLibro
         try {
-          const respuestaEstaContiene = await axios.get(
-            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`
+          // Consultamos la bd para buscar el libro si no se pudo registrar
+          const libroRespuesta = await axios.get(
+            `http://localhost:8090/api/libros/titulo/${props.libro.tituloLibro}`
           )
-          if (respuestaEstaContiene.status === 200) {
-            console.log(respuestaEstaContiene.data)
-            try {
-              const estaContiene = ref({
-                id: '',
-                estadoLibro: ''
-              })
-              estaContiene.value.id = null
-              estaContiene.value.estadoLibro = accionSeleccionada.value
-              // Actualizamos el estado del libro
-              const responseCambiarEstadoLibro = await axios.put(
-                `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`,
-                estaContiene.value,
-                {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  }
-                }
-              )
-              console.log(responseCambiarEstadoLibro.data)
-              mostrarMensajeOk()
-            } catch (error) {
-              console.error('Error al cambiar el estado del libro:', error.response.data)
-            }
+          const idLibro = libroRespuesta.data.idLibro
+          console.log(libroRespuesta.data)
+
+          // Crear la relación con el marcado para leer default
+          try {
+            const response = await axios.post(
+              `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${props.libro.id}`,
+              'Marcado para leer'
+            )
+            console.log(response.data)
+            mostrarMensajeOk()
+          } catch (error) {
+            console.error('Error al guardar en la relación:', error.response?.data || error.message)
           }
         } catch (error) {
-          console.error('Error al comprobar la relación:', error.response.data)
+          console.error('Error al consultar el libro:', error.response?.data || error.message)
         }
       } else {
-        console.error('Error al registrar el libro:', error.response.data)
+        console.error('Error al registrar el libro:', error.response?.data || error.message)
       }
     }
-  } catch (error) {
-    console.error('Error general:', error)
+  } else {
+    try {
+      const idLibro = props.libro.id
+      const estaContiene = {
+        id: null,
+        estadoLibro: accionSeleccionada.value
+      }
+
+      // Actualizamos el estado del libro
+      const responseCambiarEstadoLibro = await axios.put(
+        `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`,
+        estaContiene,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      console.log(responseCambiarEstadoLibro.data)
+      mostrarMensajeOk()
+    } catch (error) {
+      console.error('Error al cambiar el estado del libro:', error.response?.data || error.message)
+    }
   }
 }
 
 watch(accionSeleccionada, (newVal) => {
   if (newVal) {
-    cambiarEstadoLibro(newVal)
+    cambiarEstadoLibro({ target: { value: newVal } })
   }
 })
 
@@ -159,6 +188,7 @@ defineExpose({
   align-items: center !important;
   width: 33%;
 }
+
 .portada {
   display: flex;
   height: 250px;

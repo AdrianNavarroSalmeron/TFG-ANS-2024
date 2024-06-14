@@ -29,6 +29,8 @@ const libroApi = ref({
 
 const mostrarDetalles = ref(false)
 const mensajeOk = ref(false)
+const libroEnBiblioteca = ref(false)
+const libroEnBibliotecaActualizar = ref(false)
 
 const mostrarMensajeOk = () => {
   mensajeOk.value = true
@@ -65,6 +67,26 @@ const getDetallesLibro = async () => {
   } catch (error) {
     libroApi.value.tituloLibro = 'Error en la API' + error
   }
+  // Verificamos si el libro está en la biblioteca del usuario
+  const checkLibroEnBiblioteca = await axios.get(
+    `http://localhost:8090/api/bibliotecas/libroapi/${datosUsuario.value.id}/${libroApi.value.id}`
+  )
+  if (checkLibroEnBiblioteca.status === 200) {
+    libroEnBiblioteca.value = true
+    libroEnBibliotecaActualizar.value = true
+  }
+}
+
+const borrarLibro = async () => {
+  try {
+    const idLibro = libroApi.value.id
+    const response = await axios.delete(
+      `http://localhost:8090/api/bibliotecas/libroapi/${datosUsuario.value.id}/${idLibro}`
+    )
+    console.log(response.data)
+  } catch (error) {
+    console.error('Error al borrar el libro:', error.response.data)
+  }
 }
 
 onMounted(() => {
@@ -74,22 +96,53 @@ onMounted(() => {
 const accionSeleccionada = ref('')
 
 const cambiarEstadoLibro = async (valor) => {
-  accionSeleccionada.value = valor.target.value
-  try {
-    const libro = {
-      id: libroApi.value.id,
-      titulo: libroApi.value.tituloLibro,
-      autor: libroApi.value.autorLibro
-    }
-    // Primero intentamos registrar el libro
+  const accion = valor.target.value
+
+  // Comprobamos si la acción es eliminar
+  if (accion === 'Eliminar') {
+    borrarLibro()
+    return
+  }
+  accionSeleccionada.value = accion
+
+  // Comprobamos si el libro ya está en la biblioteca
+  if (!libroEnBibliotecaActualizar.value) {
     try {
+      const libro = {
+        id: libroApi.value.id,
+        titulo: libroApi.value.tituloLibro,
+        autor: libroApi.value.autorLibro
+      }
+
+      // Intentamos registrar el libro
       const respuesta = await axios.post(`http://localhost:8090/api/libros`, libro)
       const idLibro = respuesta.data.idLibro
-      if (respuesta.status == 200) {
+      if (respuesta.status === 200) {
         console.log('Libro registrado')
         console.log(respuesta.data)
+      }
+
+      // Crear la relación con el marcado para leer default
+      try {
+        const response = await axios.post(
+          `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${libroApi.value.id}`,
+          'Marcado para leer'
+        )
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error al guardar en la relación:', error.response.data)
+      }
+    } catch (error) {
+      if (error.response && error.response.status !== 200) {
+        // Consultamos la bd para buscar el libro si no se pudo registrar
+        const libroRespuesta = await axios.get(
+          `http://localhost:8090/api/libros/titulo/${libroApi.value.tituloLibro}`
+        )
+        const idLibro = libroRespuesta.data.idLibro
+        console.log(libroRespuesta.data)
+
+        // Crear la relación con el marcado para leer default
         try {
-          // Se guarda en la relación con el marcado para leer default
           const response = await axios.post(
             `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}/${libroApi.value.id}`,
             'Marcado para leer'
@@ -98,53 +151,34 @@ const cambiarEstadoLibro = async (valor) => {
         } catch (error) {
           console.error('Error al guardar en la relación:', error.response.data)
         }
-      }
-    } catch (error) {
-      if (error.response && error.response.status !== 200) {
-        //Consultamos la bd para buscar el libro
-        const libroRespuesta = await axios.get(
-          `http://localhost:8090/api/libros/titulo/${libroApi.value.tituloLibro}`
-        )
-        console.log(libroRespuesta.data)
-        const idLibro = libroRespuesta.data.idLibro
-        try {
-          const respuestaEstaContiene = await axios.get(
-            `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`
-          )
-          if (respuestaEstaContiene.status === 200) {
-            console.log(respuestaEstaContiene.data)
-            try {
-              const estaContiene = ref({
-                id: '',
-                estadoLibro: ''
-              })
-              estaContiene.value.id = null
-              estaContiene.value.estadoLibro = accionSeleccionada.value
-              // Actualizamos el estado del libro
-              const responseCambiarEstadoLibro = await axios.put(
-                `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`,
-                estaContiene.value,
-                {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  }
-                }
-              )
-              console.log(responseCambiarEstadoLibro.data)
-              mostrarMensajeOk()
-            } catch (error) {
-              console.error('Error al cambiar el estado del libro:', error.response.data)
-            }
-          }
-        } catch (error) {
-          console.error('Error al comprobar la relación:', error.response.data)
-        }
       } else {
         console.error('Error al registrar el libro:', error.response.data)
       }
     }
-  } catch (error) {
-    console.error('Error general:', error)
+  } else {
+    // Si el libro ya está en la biblioteca, solo cambiamos el estado
+    try {
+      const idLibro = libroApi.value.id
+      const estaContiene = {
+        id: null,
+        estadoLibro: accionSeleccionada.value
+      }
+
+      // Actualizamos el estado del libro
+      const responseCambiarEstadoLibro = await axios.put(
+        `http://localhost:8090/api/bibliotecas/${datosUsuario.value.id}/${idLibro}`,
+        estaContiene,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      console.log(responseCambiarEstadoLibro.data)
+      mostrarMensajeOk()
+    } catch (error) {
+      console.error('Error al cambiar el estado del libro:', error.response.data)
+    }
   }
 }
 
@@ -192,6 +226,7 @@ defineExpose({
           <option value="Leyendo">Leyendo</option>
           <option value="Leido">Leido</option>
           <option value="Marcado para leer">Por leer</option>
+          <option v-if="libroEnBiblioteca" value="Eliminar">Eliminar</option>
         </select>
         <div v-if="mensajeOk" class="mensajeOk">
           <span class="iconoOk">&#10004;</span>
