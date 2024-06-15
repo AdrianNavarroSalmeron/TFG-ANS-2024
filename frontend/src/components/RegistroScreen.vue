@@ -193,4 +193,29 @@ const enviarUsuarioaBack = () => {
 .containerImagen {
   margin: 0px;
 }
+
+@media (max-width: 768px) {
+  .containerSecciones {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .containerLogin {
+    width: 100%;
+  }
+
+  .seccion {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo {
+    font-size: 1.2rem;
+  }
+
+  .seccion {
+    width: 100%;
+  }
+}
 </style>

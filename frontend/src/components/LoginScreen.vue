@@ -200,4 +200,44 @@ const registrarse = () => {
   cursor: pointer;
   color: white;
 }
+
+.containerGeneral {
+  flex-direction: column;
+}
+
+.containerLogin,
+.containerInputs {
+  width: 90%;
+}
+
+.imagenLogo {
+  height: 200px;
+  width: auto;
+}
+
+@media (min-width: 768px) {
+  .containerGeneral {
+    flex-direction: row;
+  }
+
+  .containerLogin,
+  .containerInputs {
+    width: 50%;
+  }
+
+  .imagenLogo {
+    height: 250px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .containerLogin,
+  .containerInputs {
+    width: 30%;
+  }
+
+  .imagenLogo {
+    height: 300px;
+  }
+}
 </style>
