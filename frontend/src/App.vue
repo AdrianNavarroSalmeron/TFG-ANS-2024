@@ -11,6 +11,14 @@ const condicion = computed(() => {
 </script>
 
 <template>
+  <html lang="es">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Document</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css" />
+    </head>
+  </html>
   <div class="contenedorGenerico">
     <div class="contenedorNav">
       <BarraNavegacion v-if="condicion" />
@@ -41,8 +49,5 @@ const condicion = computed(() => {
 }
 
 .contenedorNav {
-  display: flex;
-  margin: 0px;
-  padding: 0px;
 }
 </style>

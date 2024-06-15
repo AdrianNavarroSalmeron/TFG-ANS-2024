@@ -246,56 +246,81 @@ defineExpose({
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
+  padding: 20px; /* Agregamos padding para que no se vea pegado a los bordes en móviles */
 }
+
+.header,
+.footer {
+  width: 100%;
+}
+
+/* Estilos para contenedorGeneral utilizando Flexbox */
 .contenedorGeneral {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  margin-left: 200px;
-  margin-right: 100px;
-  margin-bottom: 50px;
-  justify-content: space-evenly;
-  gap: 100px;
+  margin: 20px 0;
+  gap: 20px;
+}
+
+/* Ajustamos los elementos para tamaños de pantallas más grandes */
+@media (min-width: 768px) {
+  .contenedorGeneral {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.portadaLibro img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 10px;
 }
 
 .informacionLibro {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 50%;
+  text-align: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .informacionLibro {
+    width: 50%;
+    text-align: left;
+  }
 }
 
 .titulo {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
 .nombreAutor {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .sinopsis {
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-top: 20px;
   border: 1px solid white;
   border-radius: 10px;
   padding: 10px;
-  max-height: 390px; /* Altura máxima de la sinopsis */
-  overflow-y: auto; /* Habilita el scroll vertical */
-}
-
-.portadaLibro img {
-  display: flex;
-  justify-content: center;
-  width: 200px;
-  height: 300px;
-  border-radius: 10px;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .botonCambiarEstado {
-  margin-bottom: 200px;
-  width: 200px;
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .botonCambiarEstado {
+    width: auto;
+  }
 }
 
 .select {
@@ -318,13 +343,6 @@ defineExpose({
     0.65em auto,
     100%;
   appearance: none;
-}
-
-.informacionCompra {
-  margin-top: 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: rgb(44, 177, 188);
 }
 
 .boton {
@@ -351,11 +369,6 @@ defineExpose({
   font-size: 1rem;
   width: 100%;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
 }
 
 .barraSeparadora {
@@ -373,10 +386,42 @@ defineExpose({
   margin-top: 20px;
   width: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .iconoOk {
   color: #28a745;
   margin-right: 5px;
+}
+
+/* Estilos para dispositivos pequeños */
+@media (max-width: 768px) {
+  .contenedorGeneral {
+    margin-left: 20px;
+    margin-right: 20px;
+    gap: 20px;
+  }
+
+  .informacionLibro {
+    width: 100%;
+  }
+
+  .titulo {
+    font-size: 1.5rem;
+  }
+
+  .nombreAutor {
+    font-size: 1.2rem;
+  }
+
+  .sinopsis {
+    font-size: 1rem;
+    max-height: 200px;
+  }
+
+  .select {
+    width: 100%;
+  }
 }
 </style>

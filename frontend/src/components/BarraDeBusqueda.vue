@@ -114,8 +114,7 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  max-height: 20px;
-  margin-right: 70px;
+  align-items: center;
 }
 
 .botonBuscar {
@@ -127,22 +126,32 @@ const gestionarBusquedaUsuario = (valorIntroducidoPorUsuario) => {
 }
 
 .botonBuscar:hover {
-  border-radius: 50%;
   background-color: rgb(44, 177, 188);
+  color: white;
+}
+
+.barraBusquedaInput {
+  border-radius: 25px;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid white;
   color: white;
 }
 
 @media screen and (max-width: 700px) {
   .contenedorBusqueda {
-    margin-right: 10px;
+    flex-direction: row;
+    gap: 5px;
   }
-}
 
-.barraBusquedaInput {
-  border-radius: 25px;
-  padding: 20px;
-  width: fit-content;
-  border: 1px solid white;
-  color: white;
+  .barraBusquedaInput {
+    width: calc(100% - 40px); /* Ancho total menos el ancho del botón de búsqueda */
+  }
+
+  .botonBuscar {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
 }
 </style>

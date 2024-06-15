@@ -90,4 +90,16 @@ onMounted(() => {
   background-color: rgb(44, 177, 188);
   color: white;
 }
+
+@media screen and (max-width: 768px) {
+  .scrollContainer {
+    flex-direction: row;
+    width: 100vh;
+  }
+  .divContainerSeccion {
+    flex-direction: column;
+    width: fit-content;
+    width: 100%;
+  }
+}
 </style>

@@ -78,4 +78,29 @@ onMounted(() => {
   margin-top: 20px;
   margin-bottom: 0;
 }
+
+@media (max-width: 768px) {
+  .contenedorGeneral {
+    margin-left: 20px;
+    margin-right: 20px;
+    gap: 20px;
+  }
+
+  .tituloBusqueda {
+    margin-right: 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contenedorGeneral {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .tituloBusqueda {
+    margin-right: 10px;
+    font-size: 0.9rem;
+  }
+}
 </style>

@@ -60,4 +60,19 @@ img {
   background-color: white;
   color: rgb(56, 190, 201);
 }
+
+@media screen and (max-width: 768px) {
+  .imagen {
+    width: 100%;
+    height: 150px;
+  }
+
+  .parrafo {
+    font-size: small; /* Reducir el tamaño del texto en pantallas más pequeñas */
+    height: auto; /* Permitir que el texto crezca si se recorta */
+  }
+  .botonDetalles {
+    width: fit-content;
+  }
+}
 </style>

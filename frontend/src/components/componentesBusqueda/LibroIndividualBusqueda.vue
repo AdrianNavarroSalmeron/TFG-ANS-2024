@@ -242,4 +242,36 @@ defineExpose({
   color: #28a745;
   margin-right: 5px;
 }
+
+@media (max-width: 768px) {
+  .contenedorGeneral {
+    flex-direction: column !important;
+    align-items: center;
+  }
+
+  .boton,
+  .parrafo {
+    width: 90%; /* Ajustar el ancho para pantallas pequeñas */
+  }
+  .portada {
+    justify-content: center;
+    width: 100% !important; /* Ajustar el ancho para pantallas pequeñas */
+  }
+  .portada img {
+    width: 100%;
+  }
+  .botonCambiarEstado,
+  .select {
+    width: 75%; /* Ajustar el ancho para pantallas pequeñas */
+  }
+
+  .titulo,
+  .parrafo {
+    text-align: center; /* Centrar texto para una mejor visualización en pantallas pequeñas */
+  }
+
+  .mensajeOk {
+    padding: 10px; /* Ajustar el padding para pantallas pequeñas */
+  }
+}
 </style>

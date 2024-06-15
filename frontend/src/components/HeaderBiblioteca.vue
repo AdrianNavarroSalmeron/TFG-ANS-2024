@@ -47,10 +47,29 @@ const irOpcionesCuenta = () => {
   width: 50px;
 }
 
+/* Estilos para dispositivos pequeños */
 @media screen and (max-width: 700px) {
   .contenedorHeaderBiblioteca {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
     border-radius: 0px;
-    border: none;
+  }
+
+  .imagenLogo {
+    height: 60px;
+    width: 60px;
+    margin-bottom: 10px;
+  }
+
+  .iconoCuenta {
+    height: 25px;
+    width: 25px;
+    margin-top: 10px;
+  }
+
+  .contenedorHeaderBiblioteca > * {
+    margin: 5px 0;
   }
 }
 </style>
