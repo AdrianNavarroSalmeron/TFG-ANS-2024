@@ -84,9 +84,8 @@ public class UsuarioController {
                 usuarioConInformacionBasica.setNombreUsuario(usuario1.getNombreUsuario());
                 usuarioConInformacionBasica.setLogin(usuario1.getLogin());
                 return new ResponseEntity<Usuario>(usuarioConInformacionBasica, HttpStatus.OK);
-
             }
         }
-        return null;
+        return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
     }
 }
