@@ -69,7 +69,7 @@ const iniciarSesion = () => {
       })
     })
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
           return response.json()
         } else if (response.status === 400) {
           Swal.fire({

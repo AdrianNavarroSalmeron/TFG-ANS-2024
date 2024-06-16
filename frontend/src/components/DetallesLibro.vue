@@ -246,7 +246,7 @@ defineExpose({
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  padding: 20px; /* Agregamos padding para que no se vea pegado a los bordes en móviles */
+  padding: 20px;
 }
 
 .header,
@@ -254,16 +254,14 @@ defineExpose({
   width: 100%;
 }
 
-/* Estilos para contenedorGeneral utilizando Flexbox */
 .contenedorGeneral {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px 0;
   gap: 20px;
+  margin-left: 50px;
 }
 
-/* Ajustamos los elementos para tamaños de pantallas más grandes */
 @media (min-width: 768px) {
   .contenedorGeneral {
     flex-direction: row;
@@ -395,7 +393,6 @@ defineExpose({
   margin-right: 5px;
 }
 
-/* Estilos para dispositivos pequeños */
 @media (max-width: 768px) {
   .contenedorGeneral {
     margin-left: 20px;
