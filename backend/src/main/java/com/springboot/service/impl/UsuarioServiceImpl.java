@@ -18,7 +18,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-
+    /**
+     * Guardamos el usuario y encriptamos su contraseña
+     * @param usuario
+     * @return
+     * @throws DataIntegrityViolationException
+     */
     @Override
     public Usuario saveUsuario(Usuario usuario) throws DataIntegrityViolationException{
         String contraseniaEncriptada = Encriptador.encryptSHA256(usuario.getContrasenia());
@@ -26,6 +31,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    /**
+     * Recuperamos la lista de usuarios
+     * @return
+     */
     @Override
     public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
@@ -42,6 +51,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
+    /**
+     * Actualizamos los datos del usuario y encriptamos su contraseña
+     * @param usuario
+     * @param id
+     * @return
+     */
     @Override
     public Usuario updateUsuario(Usuario usuario, Long id) {
         Usuario usuarioEsperado = usuarioRepository.findById(id).orElseThrow(
@@ -59,6 +74,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioEsperado;
     }
 
+    /**
+     * Borramos el usuario
+     * @param id
+     */
     @Override
     public void deleteUsuario(Long id){
         usuarioRepository.findById(id).orElseThrow(()

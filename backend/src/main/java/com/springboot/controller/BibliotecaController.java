@@ -26,6 +26,7 @@ public class BibliotecaController {
     @Autowired
     EstaContieneService estaContieneService;
 
+    //Buscamos la biblioteca por id
     @GetMapping("{id}")
     public ResponseEntity<?> findBibliotecaById(@PathVariable("id") Long id){
         try{
@@ -36,11 +37,13 @@ public class BibliotecaController {
         }
     }
 
+    //Nos devuelve todas las bibliotecas
     @GetMapping
     public List<Biblioteca> getAllBibliotecas(){
         return bibliotecaService.findAllBibliotecas();
     }
 
+    //Añade un libro a una biblioteca
     @PostMapping("{id_biblioteca}/{id_libro}/{id_libro_api}")
     public ResponseEntity<?> addLibroABiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
                                                  @PathVariable("id_libro") Long idLibro, @PathVariable("id_libro_api") String idLibroApi) {
@@ -56,7 +59,7 @@ public class BibliotecaController {
         }
     }
 
-
+    //Borra un libro de la biblioteca
     @DeleteMapping("{id_biblioteca}/{id_libro}")
     public ResponseEntity<?> deleteLibroFromBiblioteca(@PathVariable("id_biblioteca") Long idBiblioteca,
                                                  @PathVariable("id_libro") Long idLibro) {
@@ -71,6 +74,12 @@ public class BibliotecaController {
         }
     }
 
+    /**
+     * Borra el libro de la relacion EstaContiene
+     * @param idUsuario id del usuario que tiene registrado el libr
+     * @param idLibroApi id del libro que tiene en la api de googleBooks
+     * @return ResponseEntity
+     */
     @DeleteMapping("/libroapi/{id_usuario}/{id_libro_api}")
     public ResponseEntity<?> deleteLibroFromEstaContiene(@PathVariable("id_usuario") Long idUsuario,
     @PathVariable("id_libro_api") String idLibroApi){
@@ -85,6 +94,13 @@ public class BibliotecaController {
         }
     }
 
+    /**
+     * Actualiza el libro en una biblioteca
+     * @param idUsuario id del usuario al que pertecene la biblioteca
+     * @param idLibro id del libro de la api de google
+     * @param estado estado que deseamos establecer para el libro en la relacionEstaContiene
+     * @return ResponseEntity
+     */
     @PutMapping("{id_usuario}/{id_libro}")
     public ResponseEntity<?> updateLibroFormBiblioteca(@PathVariable("id_usuario") Long idUsuario,
                                                        @PathVariable("id_libro") String idLibro,
@@ -98,6 +114,12 @@ public class BibliotecaController {
         }
     }
 
+    /**
+     * Busca una fila de la tabla EstaContiene a traves de la id del usuario
+     * @param idUsuario id del usuario
+     * @param idLibro id del libro en la Api
+     * @return ResponseEntity con la fila
+     */
     @GetMapping("{id_usuario}/{id_libro}")
     public ResponseEntity<?> findEstaContieneById(@PathVariable("id_usuario")  Long idUsuario,
     @PathVariable("id_libro") String idLibro){
@@ -111,6 +133,12 @@ public class BibliotecaController {
         }
     }
 
+    /**
+     * Nos devuelve la fila de EstaContiene a traves de la id api libro
+     * @param idUsuario
+     * @param idLibro
+     * @return ResponseEntity con la fila de EstaContiene
+     */
     @GetMapping("/libroapi/{id_usuario}/{id_libro}")
     public ResponseEntity<?> findEstaContieneByIdApiLibro(@PathVariable("id_usuario")  Long idUsuario,
                                                   @PathVariable("id_libro") String idLibro){
@@ -130,7 +158,11 @@ public class BibliotecaController {
     }
 
 
-
+    /**
+     * Nos devuelve todas las filas de EstaContiene de ese usuario
+     * @param idUsuario
+     * @return ResponseEntity con la lista de filas de EstaContiene
+     */
     @GetMapping("/biblioteca/{id_usuario}")
     public ResponseEntity<?> getBibliotecaEstaContieneUsuario(@PathVariable("id_usuario") Long idUsuario){
         try{

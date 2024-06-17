@@ -49,6 +49,12 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Actualizamos usuario por id
+     * @param id
+     * @param usuario
+     * @return
+     */
     @PutMapping("{id}")
     public ResponseEntity<?> updateUsuario(@PathVariable("id") Long id ,@RequestBody Usuario usuario){
         try{
@@ -59,6 +65,11 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Borramos usuario por id
+     * @param id
+     * @return
+     */
     @DeleteMapping("{id}")
     public ResponseEntity<String>deleteUsuarioByiD(@PathVariable("id") Long id){
         try{
@@ -71,10 +82,17 @@ public class UsuarioController {
 
     }
 
+    /**
+     * Comprueba si el usuario existe en la base de datos
+     * @param usuario usuario que nos llega del front
+     * @return ResponseEntity con los datos de la base de datos
+     */
     @PutMapping("/login")
     public ResponseEntity<?>comprobarSiUsuarioEnBd(@RequestBody Usuario usuario){
         List<Usuario> usuariosBd = usuarioService.getAllUsuarios();
+        //Encriptamos la contraseña
         String contraseniaEncriptada = Encriptador.encryptSHA256(usuario.getContrasenia());
+        //For que comprueba si el usuario esta registrado en la base de datos
         for(Usuario usuario1 : usuariosBd){
             if(usuario.getLogin()
                     .equals(usuario1.getLogin())
@@ -83,9 +101,11 @@ public class UsuarioController {
                 usuarioConInformacionBasica.setIdUsuario(usuario1.getIdUsuario());
                 usuarioConInformacionBasica.setNombreUsuario(usuario1.getNombreUsuario());
                 usuarioConInformacionBasica.setLogin(usuario1.getLogin());
+                //En caso de estar devolvemos la respuesta correcta con los datos y un codigo 200
                 return new ResponseEntity<Usuario>(usuarioConInformacionBasica, HttpStatus.OK);
             }
         }
+        //En caso de no estar devolvemos un codigo 400
         return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
     }
 }
