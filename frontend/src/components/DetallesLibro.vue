@@ -42,6 +42,7 @@ const mostrarMensajeOk = () => {
 //hacemos llamada a la API para obtener los detalles del libro a traves del titulo
 const getDetallesLibro = async () => {
   try {
+    //Hacemos una llamada a la api para recuperar los datos del libro
     const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${props.id}`)
     const data = await res.json()
     libroApi.value.id = data.id
